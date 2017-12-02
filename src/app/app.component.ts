@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, LoadingController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Push, PushObject, PushOptions } from "@ionic-native/push";
 
 import { LoghandlingProvider } from '../providers/loghandling/loghandling';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
@@ -32,15 +33,17 @@ export class MyApp {
   constructor(private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, 
   private loghandlingProvider: LoghandlingProvider, private authenticationProvider: AuthenticationProvider,
   private loadingController: LoadingController, private localstorageProvider: LocalstorageProvider,
-  private events: Events) {
+  private events: Events, private push:Push) {
+    
     this.initializeApp();
+    this.registerPush();
 
     this.events.subscribe('user:displayName updated', (nickname) => {
       this.username = nickname;
     });
     
     this.pages = [
-      { title: 'Home', component: 'TabsPage' }
+      { title: 'Set Online', component: 'SetOnlinePage' }
     ];
   }
 
@@ -51,7 +54,7 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.nav.push(page.component);
   }
 
   /**
@@ -81,7 +84,8 @@ export class MyApp {
           let view = this.nav.getActive();
           if(this.nav.canGoBack()){
             this.nav.pop();
-            if (view.component.name === "ChatMessagePage" || view.component.name === "ParsonalchatPage") {
+            if (view.component.name === "ChatMessagePage" || view.component.name === "ParsonalchatPage" ||
+            view.component.name === "OneTwoOnePage") {
               this.loghandlingProvider.showLog(this.TAG,'set root from component');
               let loading = this.loadingController.create();
               loading.present();
@@ -91,8 +95,8 @@ export class MyApp {
           } else{
             this.platform.exitApp();
           }
+        });
       });
-    });
 
     let loading = this.loadingController.create();
     this.authenticationProvider.getAuthenticationStatus()
@@ -106,6 +110,33 @@ export class MyApp {
         this.rootPage = 'LoginPage';
         this.loghandlingProvider.showLog(this.TAG,'Error: ' + JSON.stringify(error));
       });
+  }
+
+  /**
+   * register push notification.
+   */
+  registerPush(){
+
+      const options: PushOptions = {
+      android: {},
+      ios: {
+          alert: 'true',
+          badge: true,
+          sound: 'false'
+      },
+      windows: {},
+      browser: {
+          pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      }
+    };
+
+    const pushObject: PushObject = this.push.init(options);
+
+    pushObject.on('notification').subscribe((notification: any) => {console.log('Received a notification', notification)});
+
+    pushObject.on('registration').subscribe((registration: any) => {console.log('Device registered', registration)});
+
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 }
 

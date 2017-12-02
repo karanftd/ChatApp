@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, App, ToastController, MenuController } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
 
 import { AuthenticationProvider, UserModel } from '../../providers/authentication/authentication';
 import { ChathandlingProvider, MessageModel } from '../../providers/chathandling/chathandling';
@@ -23,9 +24,9 @@ export class TabChatsPage {
 
   constructor(private app: App, private toastController: ToastController, private authenticationProvider: AuthenticationProvider,
     private chathandlingProvider: ChathandlingProvider, private loghandlingProvider: LoghandlingProvider,
-    private menuController: MenuController) {
+    private menuController: MenuController, private geolocation: Geolocation) {
       this.menuController.enable(true, 'navigation_menu');
-    }
+  }
   
   /**
    * Called after view load.
@@ -50,6 +51,12 @@ export class TabChatsPage {
    * join personal chat chanel
    */
   joinPerosnalChannel(channel: string | any = 'general') {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.loghandlingProvider.showLog(this.TAG, 'Lat ' + resp.coords.latitude);
+      this.loghandlingProvider.showLog(this.TAG, 'Lon ' + resp.coords.longitude);
+    }).catch((error) => {
+      this.loghandlingProvider.showLog(this.TAG, 'Error getting location ' + error);
+    });
     this.app.getRootNav().push('ParsonalchatPage', {user: this.user});
   }
 

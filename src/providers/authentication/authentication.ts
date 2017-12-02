@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 
 import { Facebook } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus';
+
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
@@ -9,7 +11,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { LoghandlingProvider } from '../loghandling/loghandling';
 import { usercredentials } from '../../models/interfaces/usercredentials';
-import { tableNames } from '../../app/app.firebaseconfig';
+import { tableNames, googleWebClientId } from '../../app/app.firebaseconfig';
 import { LocalstorageProvider } from '../localstorage/localstorage'
 
 /*
@@ -27,7 +29,7 @@ export class AuthenticationProvider {
    * Basic constructor for LogServiceProvider.
    */
   constructor(private loghandlingProvider: LoghandlingProvider, private platform: Platform,
-  private facebook: Facebook, private angularFireAuth: AngularFireAuth, 
+  private facebook: Facebook, private GooglePlus: GooglePlus, private angularFireAuth: AngularFireAuth, 
   private angularFireDatabase: AngularFireDatabase, private localstorageProvider: LocalstorageProvider) {
     this.loghandlingProvider.showLog(this.TAG,'Hello AuthenticationProvider Provider');
   }
@@ -93,6 +95,27 @@ export class AuthenticationProvider {
     return this.angularFireDatabase.object(tableNames.User + '/' + user.uid).update(user);
   }
 
+  /**
+   * sign in with googleplus
+   */
+  signInWithGoogle(): firebase.Promise<any> {
+    if (this.platform.is('cordova')) {
+      return this.platform.ready().then(() => {
+        return this.GooglePlus.login({
+          'scopes': 'email',
+          'webClientId' : googleWebClientId,
+          'offline': true
+        }).then((res) => {
+          const googleCredential = firebase.auth.GoogleAuthProvider.credential(res.idToken);
+          return this.angularFireAuth.auth.signInWithCredential(googleCredential);
+        }, (error) => {
+          return firebase.Promise.reject(error);
+        });
+      });
+    } else {
+      return this.angularFireAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    }
+  }
   /**
    * Sign out user.
    */

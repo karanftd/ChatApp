@@ -34,6 +34,8 @@ export class LoginPage {
   private authenticationProvider: AuthenticationProvider, private loghandlingProvider: LoghandlingProvider,
   private menuController: MenuController) {
     this.menuController.enable(false, 'navigation_menu');
+
+    
   }
 
   /**
@@ -63,6 +65,18 @@ export class LoginPage {
    */
   loginWithGoogle(){
     //google login 
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.authenticationProvider.signInWithGoogle()
+      .then((res) => {
+        this.updateProfile(res.user || res);
+        loading.dismiss();
+        this.navCtrl.setRoot('TabsPage');
+      }, (error) => {
+        loading.dismiss();
+        this.showMessage(error && error.message);
+      });
+
   }
 
   /**
@@ -95,6 +109,20 @@ export class LoginPage {
 
   signup(){
     this.navCtrl.push('SignupPage');
+  }
+
+  private updateProfile(user: any) {
+    return this.authenticationProvider.updateProfile({
+      uid        : user.uid,
+      displayName: user.displayName,
+      email      : user.email,
+      photoURL   : user.photoURL,
+      providerData   : user.providerData[0]
+    });
+  }
+
+  private showMessage(message: string) {
+    //this.toastCtrl.create({message: message, duration: 3000}).present();
   }
 
 }

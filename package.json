@@ -22,20 +22,25 @@
         "@angular/platform-browser-dynamic": "4.4.3",
         "@ionic-native/core": "4.3.0",
         "@ionic-native/facebook": "^3.14.0",
+        "@ionic-native/google-plus": "^3.12.1",
         "@ionic-native/file-chooser": "^4.3.2",
         "@ionic-native/file-path": "^4.3.2",
+        "@ionic-native/geolocation": "^4.3.3",
         "@ionic-native/keyboard": "^4.3.2",
+        "@ionic-native/push": "^4.3.3",
         "@ionic-native/splash-screen": "4.3.0",
         "@ionic-native/status-bar": "4.3.0",
         "@ionic/storage": "2.0.1",
         "angularfire2": "^4.0.0-rc0",
         "cordova-android": "^6.2.3",
+        "cordova-browser": "^4.1.0",
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-device": "^1.1.4",
         "cordova-plugin-facebook4": "^1.9.1",
         "cordova-plugin-file": "^4.3.3",
         "cordova-plugin-filechooser": "^1.0.1",
         "cordova-plugin-filepath": "^1.1.0",
+        "cordova-plugin-geolocation": "^2.4.3",
         "cordova-plugin-ionic-webview": "^1.1.15",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "git+https://github.com/apache/cordova-plugin-statusbar.git",
@@ -44,6 +49,7 @@
         "ionic-angular": "^3.7.1",
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
+        "phonegap-plugin-push": "^2.0.0",
         "promise-polyfill": "^6.0.2",
         "rxjs": "5.4.3",
         "sw-toolbox": "3.6.0",
@@ -68,10 +74,17 @@
             },
             "cordova-plugin-filechooser": {},
             "cordova-plugin-filepath": {},
-            "cordova-plugin-file": {}
+            "cordova-plugin-file": {},
+            "cordova-plugin-geolocation": {
+                "GEOLOCATION_USAGE_DESCRIPTION": "To locate user."
+            },
+            "phonegap-plugin-push": {
+                "SENDER_ID": "34191777330"
+            }
         },
         "platforms": [
-            "android"
+            "android",
+            "browser"
         ]
     }
 }

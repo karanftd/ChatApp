@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, MenuController } from 'ionic-angular';
+import { IonicPage, LoadingController, MenuController, App } from 'ionic-angular';
 import { ContactslistProvider } from '../../providers/contactslist/contactslist';
 import { LocalstorageProvider } from '../../providers/localstorage/localstorage';
 
@@ -18,7 +18,7 @@ export class TabContactsPage {
   contactList: Array<any>;
   email: string;
 
-  constructor(private loadingController: LoadingController, private contactslistProvider: ContactslistProvider,
+  constructor(private app: App, private loadingController: LoadingController, private contactslistProvider: ContactslistProvider,
   private localstorageProvider: LocalstorageProvider,private menuController: MenuController) {
     this.email = this.localstorageProvider.getEmail();
     this.menuController.enable(true, 'navigation_menu');
@@ -32,9 +32,10 @@ export class TabContactsPage {
       loading.dismiss();
     })
   }
-
-  log(status: string){
-    console.log("status : " + status);
+  
+  joinChat(uid: string)
+  {
+    this.app.getRootNav().push('OneTwoOnePage', {uid: uid});
   }
 
 }

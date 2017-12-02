@@ -32,12 +32,29 @@ export class ChathandlingProvider {
   }
 
   /**
-   * Get all messages from table for general channel.
+   * Get all messages online user channel.
    * @param channelId channel id for chat messages.
    */
   getPersonalMessages(channelId: string) {
 
     return this.angularFireDatabase.list(`${tableNames.PersonalMessage}/${channelId}/${tableNames.PersonalMessage}`)
+      .map(messages => messages.map((item) => {
+        item.day = new Date(item.timestamp || Date.now()).getDate();
+
+        if (item.from)
+          item.user = this.authenticationProvider.getFullProfile(item.from);
+
+          return item;
+      }));
+  }
+
+  /**
+   * Get messages for pertucular user.
+   * @param channelId channel id for one two one messages.
+   */
+  getOneTwoOneMessages(channelId: string) {
+
+    return this.angularFireDatabase.list(`${tableNames.OneTwoOneMessages}/${channelId}`)
       .map(messages => messages.map((item) => {
         item.day = new Date(item.timestamp || Date.now()).getDate();
 
@@ -88,6 +105,21 @@ export class ChathandlingProvider {
    */
   sendPersonalMessage(userId: string, message: string, channelId: string) {
     return this.angularFireDatabase.list(`${tableNames.PersonalMessage}/${channelId}/${tableNames.PersonalMessage}`)
+      .push({
+        from: userId,
+        message: message,
+        timestamp: firebase.database['ServerValue']['TIMESTAMP']
+      });
+  }
+
+  /**
+   * Add entry in database for send one two one message.
+   * @param userId user id for from field.
+   * @param message message string.
+   * @param channelId channel id for chat messages.
+   */
+  sendOneTwoOneMessage(userId: string, message: string, channelId: string) {
+    return this.angularFireDatabase.list(`${tableNames.OneTwoOneMessages}/${channelId}`)
       .push({
         from: userId,
         message: message,

@@ -1,34 +1,32 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavParams, Platform, TextInput, Content, LoadingController } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 
 import { ChathandlingProvider } from '../../providers/chathandling/chathandling';
-import { UserModel } from '../../providers/authentication/authentication';
-import { ApihandlingProvider } from '../../providers/apihandling/apihandling';
+import { AuthenticationProvider , UserModel } from '../../providers/authentication/authentication';
 import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
-import { ConstantProvider } from '../../providers/constant/constant';
 import { MessageimagehandlerProvider } from '../../providers/messageimagehandler/messageimagehandler';
 
 /**
- * Generated class for the ParsonalchatPage page.
- *
- * Page display list of messages for personal channel.
+ * Generated class for the OneTwoOnePage page.
+ * One two one chat page.
  */
 
 @IonicPage()
 @Component({
-  selector: 'page-parsonalchat',
-  templateUrl: 'parsonalchat.html',
+  selector: 'page-one-two-one',
+  templateUrl: 'one-two-one.html',
 })
-export class ParsonalchatPage implements OnInit, OnDestroy {
+export class OneTwoOnePage {
 
-  private TAG: string = 'ParsonalchatPage';
+  private TAG: string = 'OneTwoOnePage';
   chatText: string = '';
   chatMessages: Array<string>;
   textMaxLength: number = 400;
   user: UserModel;
   channelId: string;
   loading: any;
+  uid :string;
 
   showEmojiPicker = false;
   @ViewChild('chat_input') messageInput: TextInput;
@@ -46,31 +44,38 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
    * @param loghandlingProvider log handling provider.
    * @param loadingController loading controller.
    * @param messageimagehandlerProvider handle image uploading on firebase.
+   * @param authenticationProvider authentication provider.
    */
   constructor( 
     private navParams: NavParams,
     private platform: Platform,
     private keyboard: Keyboard,
     private chatProvider: ChathandlingProvider,
-    private apihandlingProvider: ApihandlingProvider,
     private loghandlingProvider: LoghandlingProvider,
     private loadingController:LoadingController,
-    private messageimagehandlerProvider: MessageimagehandlerProvider) {
+    private messageimagehandlerProvider: MessageimagehandlerProvider, 
+    private authenticationProvider: AuthenticationProvider) {
     this.user = this.navParams.get('user');
 
     this.loading = this.loadingController.create({
       content: 'Please wait'
     });
 
-    this.loghandlingProvider.showLog(this.TAG, "calling api");
-    this.loading.present();
-    this.apihandlingProvider.callRequest(ConstantProvider.BASE_URL + "getUserToChat").subscribe(res => {
-      this.channelId = res.uid + "-" + this.user.uid;
-      this.loghandlingProvider.showLog(this.TAG,'Channel ID : ' + this.channelId);
-      this.loadData();
-    },err => {
-      this.loghandlingProvider.showLog(this.TAG, err.message);
-    });
+    this.uid = this.navParams.get('uid');
+
+    this.authenticationProvider.getFullProfile()
+      .subscribe((user: any) => {
+        this.user = user
+
+        if(this.user.uid > this.uid)
+        {
+          this.channelId = this.user.uid + "-" + this.uid;
+        }else {
+          this.channelId = this.uid + "-" + this.user.uid ;
+        }
+
+        this.loadData();
+      });
 
   }
 
@@ -78,12 +83,11 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
    * Load data for personal chennal.
    */
   loadData(){
+
     this.loghandlingProvider.showLog(this.TAG, this.channelId);
 
-    this.chatProvider.getPersonalMessages(this.channelId)
+    this.chatProvider.getOneTwoOneMessages(this.channelId)
       .subscribe((messages => this.chatMessages = messages));
-
-    this.loading.dismiss();
 
     if (this.platform.is('cordova')) {
       this.keyboard.onKeyboardShow()
@@ -113,7 +117,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     if (!this.chatText)
       return;
 
-    this.chatProvider.sendPersonalMessage((this.user as any).$key, this.chatText, this.channelId)
+    this.chatProvider.sendOneTwoOneMessage((this.user as any).$key, this.chatText, this.channelId)
       .then(() => {
           this.chatText = '';
           this.scrollDown();
@@ -204,7 +208,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     this.loading.present();
     this.messageimagehandlerProvider.imageMassegeUpload().then((imgurl) => {
       this.loading.dismiss();
-      this.chatProvider.sendPersonalMessage((this.user as any).$key, imgurl.toString() , this.channelId)
+      this.chatProvider.sendOneTwoOneMessage((this.user as any).$key, imgurl.toString() , this.channelId)
       .then(() => {
         this.chatText = '';
         this.scrollDown();
@@ -216,4 +220,5 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
       this.loading.dismiss();
     })
   }
+
 }

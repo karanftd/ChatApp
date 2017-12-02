@@ -27,6 +27,8 @@ import { ChathandlingProvider } from '../providers/chathandling/chathandling';
 import { EmojiProvider } from '../providers/emojiprovider/emojiprovider';
 import { AutoSizeDirective } from '../directives/auto-size/auto-size';
 import { MessageimagehandlerProvider } from '../providers/messageimagehandler/messageimagehandler';
+import { OnlineHandlingProvider } from '../providers/online-handling/online-handling';
+import { Push } from "@ionic-native/push";
 
 @NgModule({
   declarations: [
@@ -56,13 +58,15 @@ import { MessageimagehandlerProvider } from '../providers/messageimagehandler/me
     Facebook,
     Keyboard,
     FileChooser,
+    Push,
     ApihandlingProvider,
     AngularFireAuth,
     LocalstorageProvider,
     ContactslistProvider,
     ChathandlingProvider,
     EmojiProvider,
-    MessageimagehandlerProvider
+    MessageimagehandlerProvider,
+    OnlineHandlingProvider
   ]
 })
 export class AppModule {}

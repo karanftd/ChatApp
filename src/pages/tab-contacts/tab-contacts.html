@@ -13,7 +13,7 @@
 <ion-content>
   <ion-item-group *ngFor="let contact of contactList; let i=index">
 
-    <ion-item *ngIf="contact.email !== email">
+    <ion-item *ngIf="contact.email !== email" (click)="joinChat(contact.uid)">
       <ion-avatar item-start>
         <img [src]="contact.photoURL || 'assets/img/noavatar.png'">
       </ion-avatar>

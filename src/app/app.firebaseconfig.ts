@@ -7,6 +7,9 @@ export var config = {
     messagingSenderId: '34191777330'
   };
 
+  /** google webClientId */
+export const googleWebClientId = '34191777330-fet1uatktu4blufigm5d1judhhrk9kol.apps.googleusercontent.com';
+
 /** firebase tables */
 export const tableNames = {
     User               : 'users',
@@ -15,4 +18,6 @@ export const tableNames = {
     ChatMember         : 'chat_members',
     ChatMessage        : 'chat_messages',
     PersonalMessage    : 'messages',
+    OneTwoOneMessages  : 'one_two_one',
+    OnlineUser         : 'user',
 };
