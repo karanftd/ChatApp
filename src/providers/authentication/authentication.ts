@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, Events } from 'ionic-angular';
 
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -29,8 +29,14 @@ export class AuthenticationProvider {
    * Basic constructor for LogServiceProvider.
    */
   constructor(private loghandlingProvider: LoghandlingProvider, private platform: Platform,
+<<<<<<< Updated upstream
   private facebook: Facebook, private GooglePlus: GooglePlus, private angularFireAuth: AngularFireAuth, 
   private angularFireDatabase: AngularFireDatabase, private localstorageProvider: LocalstorageProvider) {
+=======
+  private facebook: Facebook, private angularFireAuth: AngularFireAuth, 
+  private angularFireDatabase: AngularFireDatabase, private localstorageProvider: LocalstorageProvider,
+  private events: Events) {
+>>>>>>> Stashed changes
     this.loghandlingProvider.showLog(this.TAG,'Hello AuthenticationProvider Provider');
   }
 
@@ -44,10 +50,16 @@ export class AuthenticationProvider {
         return this.facebook.login(['email', 'public_profile']).then((res) => {
           this.loghandlingProvider.showLog(this.TAG, "credential " + res.authResponse.accessToken);
           const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-          this.loghandlingProvider.showLog(this.TAG,"credential " + res.authResponse.accessToken);
-          return this.angularFireAuth.auth.signInWithCredential(facebookCredential);
+          this.loghandlingProvider.showLog(this.TAG,"credential " + facebookCredential);
+          return this.angularFireAuth.auth.signInWithCredential(facebookCredential).then((res: any) => {
+              this.loghandlingProvider.showLog(this.TAG,"sign in with credential : " + res);
+              return res;
+            }).catch((err) => {
+              this.loghandlingProvider.showLog(this.TAG,"sign in with error : " + err);
+              return err;
+          });
         }, (error) => {
-          this.loghandlingProvider.showLog(this.TAG,"from error block of auth" + error.message);
+          this.loghandlingProvider.showLog(this.TAG,"from error block of auth" + JSON.stringify(error));
         });
       });
     } else {
@@ -91,6 +103,8 @@ export class AuthenticationProvider {
 
     this.localstorageProvider.setUsername(user.displayName);
     this.localstorageProvider.setEmail(user.email);
+
+    this.events.publish('user:displayName updated', user.displayName);
 
     return this.angularFireDatabase.object(tableNames.User + '/' + user.uid).update(user);
   }

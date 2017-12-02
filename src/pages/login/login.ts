@@ -49,6 +49,7 @@ export class LoginPage {
         this.loghandlingProvider.showLog(this.TAG, "Back to login.");
         if(res){
           this.loghandlingProvider.showLog(this.TAG, "user get auth token" + res.user);
+          this.authenticationProvider.generateProfile(res.user || res);
           loading.dismiss();
         } else {
           loading.dismiss();

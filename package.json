@@ -33,7 +33,6 @@
         "@ionic/storage": "2.0.1",
         "angularfire2": "^4.0.0-rc0",
         "cordova-android": "^6.2.3",
-        "cordova-browser": "^4.1.0",
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-device": "^1.1.4",
         "cordova-plugin-facebook4": "^1.9.1",
@@ -68,10 +67,6 @@
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
-            "cordova-plugin-facebook4": {
-                "APP_ID": "122482168429263",
-                "APP_NAME": "Surfer"
-            },
             "cordova-plugin-filechooser": {},
             "cordova-plugin-filepath": {},
             "cordova-plugin-file": {},
@@ -80,11 +75,14 @@
             },
             "phonegap-plugin-push": {
                 "SENDER_ID": "34191777330"
+            },
+            "cordova-plugin-facebook4": {
+                "APP_ID": "122482168429263",
+                "APP_NAME": "Surfer"
             }
         },
         "platforms": [
-            "android",
-            "browser"
+            "android"
         ]
     }
 }
