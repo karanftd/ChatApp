@@ -4,6 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Facebook } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus';
 import { HttpModule } from '@angular/http';
 import { Keyboard } from '@ionic-native/keyboard';
 import { FileChooser } from '@ionic-native/file-chooser';
@@ -56,6 +57,7 @@ import { Push } from "@ionic-native/push";
     LoghandlingProvider,
     ConstantProvider,
     Facebook,
+    GooglePlus,
     Keyboard,
     FileChooser,
     Push,
@@ -66,7 +68,7 @@ import { Push } from "@ionic-native/push";
     ChathandlingProvider,
     EmojiProvider,
     MessageimagehandlerProvider,
-    OnlineHandlingProvider
+    OnlineHandlingProvider,
   ]
 })
 export class AppModule {}

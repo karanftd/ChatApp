@@ -29,14 +29,9 @@ export class AuthenticationProvider {
    * Basic constructor for LogServiceProvider.
    */
   constructor(private loghandlingProvider: LoghandlingProvider, private platform: Platform,
-<<<<<<< Updated upstream
-  private facebook: Facebook, private GooglePlus: GooglePlus, private angularFireAuth: AngularFireAuth, 
-  private angularFireDatabase: AngularFireDatabase, private localstorageProvider: LocalstorageProvider) {
-=======
   private facebook: Facebook, private angularFireAuth: AngularFireAuth, 
   private angularFireDatabase: AngularFireDatabase, private localstorageProvider: LocalstorageProvider,
-  private events: Events) {
->>>>>>> Stashed changes
+  private events: Events, private googleplus: GooglePlus) {
     this.loghandlingProvider.showLog(this.TAG,'Hello AuthenticationProvider Provider');
   }
 
@@ -115,14 +110,17 @@ export class AuthenticationProvider {
   signInWithGoogle(): firebase.Promise<any> {
     if (this.platform.is('cordova')) {
       return this.platform.ready().then(() => {
-        return this.GooglePlus.login({
+        return this.googleplus.login({
           'scopes': 'email',
           'webClientId' : googleWebClientId,
           'offline': true
         }).then((res) => {
+          this.loghandlingProvider.showLog(this.TAG, "credential " + JSON.stringify(res));
           const googleCredential = firebase.auth.GoogleAuthProvider.credential(res.idToken);
+          this.loghandlingProvider.showLog(this.TAG, "credential " + googleCredential);
           return this.angularFireAuth.auth.signInWithCredential(googleCredential);
         }, (error) => {
+          this.loghandlingProvider.showLog(this.TAG, "error " + JSON.stringify(error));
           return firebase.Promise.reject(error);
         });
       });

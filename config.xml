@@ -82,14 +82,10 @@
     <plugin name="cordova-plugin-device" spec="1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.11" />
-    <plugin name="cordova-plugin-googleplus" spec="~5.1.1">
-        <variable name="REVERSED_CLIENT_ID" value="69-7Am9CsT3BeVnnXgTV1z8Y" />
-    </plugin>
     <plugin name="cordova-plugin-facebook4" spec="~1.9.1">
         <variable name="APP_ID" value="122482168429263" />
         <variable name="APP_NAME" value="Surfer" />
     </plugin>
-    <engine name="android" spec="~6.2.3" />
     <allow-navigation href="http://10.100.20.83:8100" />
     <plugin name="cordova-plugin-filechooser" spec="^1.0.1" />
     <plugin name="cordova-plugin-filepath" spec="^1.1.0" />
@@ -101,11 +97,11 @@
     <plugin name="cordova-plugin-statusbar" spec="git+https://github.com/apache/cordova-plugin-statusbar.git" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.1" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="phonegap-plugin-push" spec="^2.0.0">
-        <variable name="SENDER_ID" value="34191777330" />
-    </plugin>
-    <engine name="android" spec="~6.2.3" />
     <engine name="browser" spec="~4.1.0" />
     <engine name="ios" spec="~4.1.1" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
+    <plugin name="cordova-plugin-googleplus" spec="^5.1.1">
+        <variable name="REVERSED_CLIENT_ID" value="69-7Am9CsT3BeVnnXgTV1z8Y" />
+    </plugin>
+    <engine name="android" spec="~6.2.3" />
 </widget>

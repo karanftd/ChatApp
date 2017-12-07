@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, LoadingController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Push, PushObject, PushOptions } from "@ionic-native/push";
+//import { Push, PushObject, PushOptions } from "@ionic-native/push";
 
 import { LoghandlingProvider } from '../providers/loghandling/loghandling';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
@@ -33,10 +33,10 @@ export class MyApp {
   constructor(private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, 
   private loghandlingProvider: LoghandlingProvider, private authenticationProvider: AuthenticationProvider,
   private loadingController: LoadingController, private localstorageProvider: LocalstorageProvider,
-  private events: Events, private push:Push) {
+  private events: Events, /**private push:Push**/) {
     
     this.initializeApp();
-    this.registerPush();
+    //this.registerPush();
 
     this.events.subscribe('user:displayName updated', (nickname) => {
       this.username = nickname;
@@ -115,7 +115,7 @@ export class MyApp {
   /**
    * register push notification.
    */
-  registerPush(){
+  /*registerPush(){
 
       const options: PushOptions = {
       android: {},
@@ -137,6 +137,6 @@ export class MyApp {
     pushObject.on('registration').subscribe((registration: any) => {console.log('Device registered', registration)});
 
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
-  }
+  }*/
 }
 

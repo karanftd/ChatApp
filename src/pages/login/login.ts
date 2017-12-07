@@ -70,10 +70,12 @@ export class LoginPage {
     loading.present();
     this.authenticationProvider.signInWithGoogle()
       .then((res) => {
-        this.updateProfile(res.user || res);
+        this.loghandlingProvider.showLog(this.TAG, "user : " + JSON.stringify(res));
+        this.authenticationProvider.generateProfile(res.user || res);
         loading.dismiss();
         this.navCtrl.setRoot('TabsPage');
       }, (error) => {
+        this.loghandlingProvider.showLog(this.TAG, "error : " + JSON.stringify(error));
         loading.dismiss();
         this.showMessage(error && error.message);
       });
@@ -110,16 +112,6 @@ export class LoginPage {
 
   signup(){
     this.navCtrl.push('SignupPage');
-  }
-
-  private updateProfile(user: any) {
-    return this.authenticationProvider.updateProfile({
-      uid        : user.uid,
-      displayName: user.displayName,
-      email      : user.email,
-      photoURL   : user.photoURL,
-      providerData   : user.providerData[0]
-    });
   }
 
   private showMessage(message: string) {

@@ -65,7 +65,12 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     this.loghandlingProvider.showLog(this.TAG, "calling api");
     this.loading.present();
     this.apihandlingProvider.callRequest(ConstantProvider.BASE_URL + "getUserToChat").subscribe(res => {
-      this.channelId = res.uid + "-" + this.user.uid;
+      if(this.user.uid > res.uid)
+      {
+        this.channelId = this.user.uid + "-" + res.uid;
+      }else {
+        this.channelId = res.uid + "-" + this.user.uid ;
+      }
       this.loghandlingProvider.showLog(this.TAG,'Channel ID : ' + this.channelId);
       this.loadData();
     },err => {
