@@ -1,0 +1,46 @@
+<!--
+  Generated template for the IncomingCallPage page.
+  Video incoming call from another user.
+-->
+<ion-content padding>
+
+  <div class="heading" padding>
+    <h2 center>Incoming call</h2>
+    <h1 center>Name</h1>
+  </div>
+
+   <div class="call-button">
+    <ion-row>
+      <ion-fab class="fab" *ngIf="showAnswer">
+        <button ion-fab><ion-icon ios="ios-call" md="md-call" (click)='AnswerCall()'></ion-icon></button>
+      </ion-fab>
+
+      <ion-fab class="fab" color="danger" *ngIf="showHangup || showReject">
+        <button ion-fab><ion-icon ios="ios-close" md="md-close" (click)='HangUp()'></ion-icon></button>
+      </ion-fab>
+    </ion-row>
+  </div>
+
+  <div class="video-block">
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <p *ngIf="showStatus" [innerHtml]="status"></p>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="showRemoteVideo">
+            <ion-col>
+                <p>Remote Stream</p>
+                <div id="remote" style="width:100%;"></div>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="showMyVideo">
+            <ion-col>
+                <p>My Stream</p>
+                <div id="mini"></div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>

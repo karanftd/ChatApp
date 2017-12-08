@@ -1,0 +1,46 @@
+page-tab-chats {
+    .item-time {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #888;
+        margin: 0px;
+        padding-left: 8px;
+        text-transform: lowercase;
+    }
+
+    .round-button {
+        margin-top: 20%;
+        margin-bottom: 20%;
+        width:40%;
+    }
+    .round-button-circle {
+        width: 100%;
+        height:0;
+        padding-bottom: 100%;
+        border-radius: 50%;
+        border:7px solid #FFF8E1;
+        overflow:hidden;
+        
+        background: #FFE082; 
+        box-shadow: 0 0 3px gray;
+    }
+    .round-button-circle:hover {
+        background:#FFECB3;
+    }
+    .round-button a {
+        display:block;
+        width:100%;
+        padding-top:50%;
+        padding-bottom:50%;
+        line-height:1em;
+        margin-top:-0.5em;
+        
+        text-align:center;
+        color:#e2eaf3;
+        font-family:'Times New Roman', Times, serif;
+        font-size:1.2em;
+        font-weight:bold;
+        text-decoration:none;
+    }
+}
+

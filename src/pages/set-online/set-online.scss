@@ -1,0 +1,14 @@
+page-set-online {
+     ion-card {
+		ion-row {
+            padding: 8px;
+        }
+     }
+     
+     ion-spinner * {
+        width: 28px;
+        height: 28px;
+        stroke: #444;
+        fill: #222;
+    }
+}

@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar color="navBar">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Contacts</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let contact of contactList; let i=index">
+      
+      <ion-item *ngIf="contact.email !== email" (click)="joinChat(contact.uid)">
+        <ion-avatar item-start>
+          <img [src]="contact.photoURL || 'assets/img/noavatar.png'">
+          <img *ngIf="checkOnlineStatus(contact.uid) == true" [src]="'assets/img/online.png'" class="online-img">
+        </ion-avatar>
+        <h2>{{contact.displayName}}</h2>
+        <p>{{contact.email}}</p>
+        <ion-note item-end>
+          {{contact.updatedAt | date: 'MMM dd'}}
+        </ion-note>
+      </ion-item>
+
+      <ion-item-options>
+        <button icon-only clear danger>
+          <ion-icon ios="md-trash" md="md-trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
