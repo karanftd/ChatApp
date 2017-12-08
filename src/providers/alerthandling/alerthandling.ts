@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AlertController} from 'ionic-angular';
 
 import { LoghandlingProvider } from '../loghandling/loghandling';
-
 /*
   Generated class for the AlerthandlingProvider provider.
 
@@ -17,12 +16,10 @@ export class AlerthandlingProvider {
 
   /**
    * Constructor of AlerthandlingProvider for basic initialisation stuff.
-   * @param alertController AlertController for create alert
+   * @param alertCtrl AlertController for create alert
    * @param logServiceProvider log handling service instance.
    */
-  constructor(
-    private alertController: AlertController, 
-    private loghandlingProvider: LoghandlingProvider) {
+  constructor(private alertCtrl: AlertController, private loghandlingProvider: LoghandlingProvider) {
     this.loghandlingProvider.showLog(this.TAG,'Constructor UtilityServiceProvider Provider');
   }
 
@@ -31,64 +28,12 @@ export class AlerthandlingProvider {
    * @param message value to display as message in alert dialog.
    */
   public presentAlert(title: string, message: string) {
-    this.alert = this.alertController.create({
+    this.alert = this.alertCtrl.create({
       title: title,
       subTitle: message,
       buttons: ['OK']
     });
     this.alert.present();
-  }
-
-  public confirmAlert(title: string, message: string) {
-    return new Promise((resolve, reject) => {
-      let alert = this.alertController.create({
-        title: title,
-        message: message,
-        buttons: [
-          {
-            text: 'Confirm',
-            handler: () => {
-              resolve(true);
-            }
-          },
-          {
-            text: 'Cancel',
-            handler: () => {
-              alert.dismiss();
-              reject(false);
-            }
-          }
-        ]
-      });
-      alert.present();
-    });
-  }
-
-  public editAlert(title: string, inputName: string, inputPlaceholder: string)
-  {
-    return new Promise((resolve, reject) => {
-      let alert = this.alertController.create({
-        title: title,
-        inputs: [{
-          name: inputName,
-          placeholder: inputPlaceholder
-        }],
-        buttons: [{
-          text: 'Cancel',
-          role: 'cancel',
-          handler: data => {
-            reject("");
-          }
-        },
-        {
-          text: 'Edit',
-          handler: data => {
-            resolve(data);
-          }
-        }]
-      });
-      alert.present();
-    });
   }
 
 }
