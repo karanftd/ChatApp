@@ -5,6 +5,28 @@
 </ion-header>
 
 <ion-content padding>
+
+  <ion-card>
+    <ion-card-header>
+      Login
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list no-lines>
+        <div class="spacer" style="height: 10px;"></div>
+        <ion-item>
+          <ion-input type="email" placeholder="Email" [(ngModel)]="credentials.email"></ion-input>
+        </ion-item>
+        <div class="spacer" style="height: 5px;"></div>
+        <ion-item>
+          <ion-input type="password" placeholder="Password" [(ngModel)]="credentials.password"></ion-input>
+        </ion-item>
+        <div class="spacer" style="height: 10px;"></div>
+        <button ion-button block round outline color="light" (click)="signin()">Login</button>
+        <div class="spacer" style="height: 10px;"></div>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
   <div class="position-bottom">
     <button ion-button block color="facebook" (click)="loginWithFacebook()">
       Log in with Facebook

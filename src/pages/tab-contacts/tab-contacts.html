@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar color="navBar">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Contacts</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-item-group *ngFor="let contact of contactList; let i=index">
+
+    <ion-item *ngIf="contact.email !== email">
+      <ion-avatar item-start>
+        <img [src]="contact.photoURL || 'assets/img/noavatar.png'">
+      </ion-avatar>
+      <h2>{{contact.displayName}}</h2>
+      <p>{{contact.email}}</p>
+      <ion-note item-end>
+        {{contact.updatedAt | date: 'MMM dd'}}
+      </ion-note>
+    </ion-item>
+    
+  </ion-item-group>
+</ion-content>
