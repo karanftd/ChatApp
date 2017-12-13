@@ -20,8 +20,11 @@
         "@angular/http": "4.4.3",
         "@angular/platform-browser": "4.4.3",
         "@angular/platform-browser-dynamic": "4.4.3",
+        "@ionic-native/camera": "^4.4.0",
         "@ionic-native/core": "4.3.0",
+        "@ionic-native/device": "^4.4.0",
         "@ionic-native/facebook": "^3.14.0",
+        "@ionic-native/file": "^4.4.2",
         "@ionic-native/file-chooser": "^4.3.2",
         "@ionic-native/file-path": "^4.3.2",
         "@ionic-native/geolocation": "^4.3.3",
@@ -35,11 +38,11 @@
         "cordova-android": "^6.2.3",
         "cordova-browser": "~4.1.0",
         "cordova-ios": "~4.1.1",
+        "cordova-plugin-camera": "^2.4.1",
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-device": "^1.1.4",
         "cordova-plugin-facebook4": "^1.9.1",
         "cordova-plugin-file": "^4.3.3",
-        "cordova-plugin-filechooser": "^1.0.1",
         "cordova-plugin-filepath": "^1.1.0",
         "cordova-plugin-geolocation": "^2.4.3",
         "cordova-plugin-googleplus": "^5.1.1",
@@ -69,9 +72,7 @@
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
-            "cordova-plugin-filechooser": {},
             "cordova-plugin-filepath": {},
-            "cordova-plugin-file": {},
             "cordova-plugin-geolocation": {
                 "GEOLOCATION_USAGE_DESCRIPTION": "To locate user."
             },
@@ -81,7 +82,9 @@
             },
             "cordova-plugin-googleplus": {
                 "REVERSED_CLIENT_ID": "69-7Am9CsT3BeVnnXgTV1z8Y"
-            }
+            },
+            "cordova-plugin-camera": {},
+            "cordova-plugin-file": {}
         },
         "platforms": [
             "android",

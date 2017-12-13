@@ -12,6 +12,9 @@ export class ConstantProvider {
 
   private TAG:string = "ConstantProvider";
 
+  /**Constant variables */
+  private static alreadySubscribed: boolean = false;
+
   /** Alert title */
   public static ALERT_TITLE_ERROR: string = "Error";
   public static ALERT_TITLE_ALERT: string = "Alert";
@@ -28,6 +31,16 @@ export class ConstantProvider {
 
   constructor(private loghandlingProvider: LoghandlingProvider) {
      this.loghandlingProvider.showLog(this.TAG,'Hello ConstantProvider Provider');
+  }
+
+  public static setAlreadySubscribed(status: boolean)
+  {
+    ConstantProvider.alreadySubscribed = status;
+  }
+
+  public static getAlreadySubscribed()
+  {
+    return ConstantProvider.alreadySubscribed;
   }
 
 }

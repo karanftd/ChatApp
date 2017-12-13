@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AlertController} from 'ionic-angular';
 
 import { LoghandlingProvider } from '../loghandling/loghandling';
+
 /*
   Generated class for the AlerthandlingProvider provider.
 
@@ -34,6 +35,31 @@ export class AlerthandlingProvider {
       buttons: ['OK']
     });
     this.alert.present();
+  }
+
+  public confirmAlert(title: string, message: string) {
+    return new Promise((resolve, reject) => {
+      let alert = this.alertCtrl.create({
+        title: title,
+        message: message,
+        buttons: [
+          {
+            text: 'Confirm',
+            handler: () => {
+              resolve(true);
+            }
+          },
+          {
+            text: 'Cancel',
+            handler: () => {
+              alert.dismiss();
+              reject(false);
+            }
+          }
+        ]
+      });
+      alert.present();
+    });
   }
 
 }

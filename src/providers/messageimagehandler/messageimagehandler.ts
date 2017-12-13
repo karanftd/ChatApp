@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FileChooser } from '@ionic-native/file-chooser';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
+import { LoghandlingProvider } from '../loghandling/loghandling';
+
 import firebase from 'firebase';
 
 /*
@@ -9,9 +12,22 @@ import firebase from 'firebase';
 */
 @Injectable()
 export class MessageimagehandlerProvider {
+
+  private TAG: string = "MessageimagehandlerProvider";
   nativepath: any;
   firestore = firebase.storage();
-  constructor(public filechooser: FileChooser) {
+  options: CameraOptions;
+
+  constructor(
+    private camera: Camera,
+    private loghandlingProvider: LoghandlingProvider) {
+      this.options = {
+        quality: 100,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+        destinationType: this.camera.DestinationType.NATIVE_URI,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+      }
   }
 
   /**
@@ -22,32 +38,29 @@ export class MessageimagehandlerProvider {
    */
   uploadimage() {
     var promise = new Promise((resolve, reject) => {
-        this.filechooser.open().then((url) => {
-          (<any>window).FilePath.resolveNativePath(url, (result) => {
-            this.nativepath = result;
-            (<any>window).resolveLocalFileSystemURL(this.nativepath, (res) => {
-              res.file((resFile) => {
-                var reader = new FileReader();
-                reader.readAsArrayBuffer(resFile);
-                reader.onloadend = (evt: any) => {
-                  var imgBlob = new Blob([evt.target.result], { type: 'image/jpeg' });
-                  var imageStore = this.firestore.ref('/profileimages').child(firebase.auth().currentUser.uid);
-                  imageStore.put(imgBlob).then((res) => {
-                    this.firestore.ref('/profileimages').child(firebase.auth().currentUser.uid).getDownloadURL().then((url) => {
-                      resolve(url);
-                    }).catch((err) => {
-                        reject(err);
-                    })
-                  }).catch((err) => {
-                    reject(err);
-                  })
-                }
+      this.camera.getPicture(this.options).then((imageData) => {
+        this.nativepath = imageData;
+        this.loghandlingProvider.showLog(this.TAG, imageData);
+        (<any>window).resolveLocalFileSystemURL(this.nativepath, (res) => {
+          res.file((resFile) => {
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(resFile);
+            reader.onloadend = (evt: any) => {
+              var imgBlob = new Blob([evt.target.result], { type: 'image/jpeg' });
+              var imageStore = this.firestore.ref('/profileimages').child(firebase.auth().currentUser.uid);
+              imageStore.put(imgBlob).then((res) => {
+                resolve(res.downloadURL);
+              }).catch((err) => {
+                reject(err);
               })
-            })
+            }
           })
-      })
-    })    
-     return promise;   
+        })
+      }, (err) => {
+        this.loghandlingProvider.showLog(this.TAG, JSON.stringify(err));
+      });
+    })
+    return promise;
   }
  
   /**
@@ -55,31 +68,27 @@ export class MessageimagehandlerProvider {
    */
   imageMassegeUpload() {
     var promise = new Promise((resolve, reject) => {
-        this.filechooser.open().then((url) => {
-          console.log("url : " + url);
-          (<any>window).FilePath.resolveNativePath(url, (result) => {
-            this.nativepath = result;
-            (<any>window).resolveLocalFileSystemURL(this.nativepath, (res) => {
-              res.file((resFile) => {
-                var reader = new FileReader();
-                reader.readAsArrayBuffer(resFile);
-                reader.onloadend = (evt: any) => {
-                  var imgBlob = new Blob([evt.target.result], { type: 'image/jpeg' });
-                  var uuid = this.guid();
-                  var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg' + uuid);
-                  imageStore.put(imgBlob).then((res) => {
-                      resolve(res.downloadURL);
-                    }).catch((err) => {
-                        reject(err);
-                    })
-                  .catch((err) => {
-                    reject(err);
-                  })
-                }
+      this.camera.getPicture(this.options).then((imageData) => {
+        this.nativepath = imageData;
+        this.loghandlingProvider.showLog(this.TAG, imageData);
+        (<any>window).resolveLocalFileSystemURL(this.nativepath, (res) => {
+          res.file((resFile) => {
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(resFile);
+            reader.onloadend = (evt: any) => {
+              var imgBlob = new Blob([evt.target.result], { type: 'image/jpeg' });
+              var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid);
+              imageStore.put(imgBlob).then((res) => {
+                resolve(res.downloadURL);
+              }).catch((err) => {
+                reject(err);
               })
-            })
+            }
           })
-      })
+        })
+      }, (err) => {
+        this.loghandlingProvider.showLog(this.TAG, JSON.stringify(err));
+      });
     })    
      return promise;   
   }

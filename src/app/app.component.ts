@@ -84,8 +84,8 @@ export class MyApp {
           let view = this.nav.getActive();
           if(this.nav.canGoBack()){
             this.nav.pop();
-            if (view.component.name === "ChatMessagePage" || view.component.name === "ParsonalchatPage" ||
-            view.component.name === "OneTwoOnePage") {
+            if (view.component.name == "ChatMessagePage" || view.component.name == "ParsonalchatPage" ||
+            view.component.name == "OneTwoOnePage") {
               this.loghandlingProvider.showLog(this.TAG,'set root from component');
               let loading = this.loadingController.create();
               loading.present();

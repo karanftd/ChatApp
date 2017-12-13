@@ -21,6 +21,7 @@ export class SetOnlinePage {
   onlineStatus: boolean;
   private TAG: string = "SetOnlinePage";
   user: UserModel;
+  uids: Array<string>;
 
   constructor(
     private loghandlingProvider: LoghandlingProvider,
@@ -28,7 +29,9 @@ export class SetOnlinePage {
     private geolocation: Geolocation,
     private authenticationProvider: AuthenticationProvider) {
       this.authenticationProvider.getFullProfile()
-      .subscribe((user: any) => this.user = user);
+      .subscribe((user: any) => {
+        this.user = user;
+      });
     }
 
   changeToggle(){
@@ -42,6 +45,7 @@ export class SetOnlinePage {
         this.onlineHandlingProvider.setUserOnline(this.user.uid,this.user.displayName,resp.coords.latitude,resp.coords.longitude).
         then(() => {
           this.loghandlingProvider.showLog(this.TAG, 'Added user for online.');
+          this.checkUserUpdate();      
         }, (error) => {
           this.loghandlingProvider.showLog(this.TAG, 'Error for adding user online.');
         });        
@@ -58,5 +62,11 @@ export class SetOnlinePage {
         this.loghandlingProvider.showLog(this.TAG, 'Error for removing user from online.');
       });
     }
+  }
+
+  checkUserUpdate(){
+    this.onlineHandlingProvider.checkActiveChatWith(this.user.uid)
+    .subscribe(uid => {this.uids = uid;
+      this.loghandlingProvider.showLog(this.TAG,"uid added." + this.uids.values)});
   }
 }

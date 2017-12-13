@@ -9,12 +9,16 @@
           <ion-icon name="camera"></ion-icon>
           </button>
         </ion-buttons>
+        <ion-buttons end *ngIf="favoriteFlag != true">
+          <button ion-button (click)="addToFavorite()">
+          <ion-icon name="star"></ion-icon>
+          </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
-
 <ion-content class="messages">
-  <ion-list no-padding *ngIf="user">
+  <ion-list no-padding *ngIf="user" (swipe)="swipeEvent($event)">
     <div *ngFor="let message of chatMessages; let i = index">
       <fieldset *ngIf="i == 0 || (i > 0) && message.day != chatMessages[i-1].day">
         <legend align="center" *ngIf="isToday(message.timestamp)">

@@ -7,7 +7,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { HttpModule } from '@angular/http';
 import { Keyboard } from '@ionic-native/keyboard';
-import { FileChooser } from '@ionic-native/file-chooser';
+import { Camera } from '@ionic-native/camera';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
@@ -30,6 +30,7 @@ import { AutoSizeDirective } from '../directives/auto-size/auto-size';
 import { MessageimagehandlerProvider } from '../providers/messageimagehandler/messageimagehandler';
 import { OnlineHandlingProvider } from '../providers/online-handling/online-handling';
 import { Push } from "@ionic-native/push";
+import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { Push } from "@ionic-native/push";
     Facebook,
     GooglePlus,
     Keyboard,
-    FileChooser,
+    Camera,
     Push,
     ApihandlingProvider,
     AngularFireAuth,
@@ -69,6 +70,7 @@ import { Push } from "@ionic-native/push";
     EmojiProvider,
     MessageimagehandlerProvider,
     OnlineHandlingProvider,
+    ActionSheetProvider,
   ]
 })
 export class AppModule {}

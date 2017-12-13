@@ -79,7 +79,6 @@ export class LoginPage {
         loading.dismiss();
         this.showMessage(error && error.message);
       });
-
   }
 
   /**

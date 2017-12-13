@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 import { tableNames } from '../../app/app.firebaseconfig';
+import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
 
 /*
   Generated class for the OnlineHandlingProvider provider.
@@ -11,8 +13,9 @@ import { tableNames } from '../../app/app.firebaseconfig';
 export class OnlineHandlingProvider {
 
   firedata = firebase.database().ref(tableNames.OnlineUser);
+  private TAG: string = "OnlineHandlingProvider";
 
-  constructor() {
+  constructor(private angularFireDatabase: AngularFireDatabase,private loghandlingProvider: LoghandlingProvider) {
     
   }
 
@@ -37,4 +40,48 @@ export class OnlineHandlingProvider {
   setUserOffline(userId: string){
     return this.firedata.child(userId).remove();
   }
+
+  /**
+   * Get messages for pertucular user.
+   * @param channelId channel id for one two one messages.
+   */
+  checkActiveChatWith(userId: string) {
+    return this.angularFireDatabase.list(`${tableNames.User}/${userId}/${"meta"}/${"message"}`)
+    .map(uids => uids.map((item) => {
+      return item;
+    }));
+  }
+
+  updateUserStatus(userId: string){
+    this.loghandlingProvider.showLog(this.TAG, "Updating status available");
+    return this.angularFireDatabase.list(`${tableNames.User}`)
+    .update(userId, {
+      status: "AVAILABLE",
+    });
+  }
+
+  deleteChat(userId: string, channelId: string){
+    this.loghandlingProvider.showLog(this.TAG, "Deleting user chat.");
+    return this.angularFireDatabase.object(`${tableNames.PersonalMessage}/${channelId}/${"meta"}/${"deleted_by"}`)
+    .update({
+      userId
+    });
+  }
+
+  addFavoriteChat(userId: string, channelId: string){
+    this.loghandlingProvider.showLog(this.TAG, "Adding user favorite.");
+    return this.angularFireDatabase.list(`${tableNames.PersonalMessage}/${channelId}/${"meta"}/${"fav_by"}`)
+    .push({
+      userId
+    });
+  }
+
+  isFavorited(channelId: string){
+    this.loghandlingProvider.showLog(this.TAG, "From is fav method.");
+    return this.angularFireDatabase.list(`${tableNames.PersonalMessage}/${channelId}/${"meta"}/${"fav_by"}`)
+    .map(contacts => contacts.map((item) => {
+      return item;
+    }));
+  }
+
 }

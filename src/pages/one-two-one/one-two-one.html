@@ -48,32 +48,10 @@
 
 <ion-footer no-border [style.height]="showEmojiPicker ? '255px' : '55px'">
   <ion-navbar color="navBar">
-    <!--<ion-row>
-      <ion-col col-2 no-padding text-center>
-        <button ion-button small clear icon-only>
-          <i class="pe-7s-camera"></i>
-        </button>
-      </ion-col>
-      <ion-col col-2 no-padding text-center>
-        <button ion-button small clear icon-only>
-          <i class="pe-7s-smile"></i>
-        </button>
-      </ion-col>
-      <ion-col col-2 no-padding text-center>
-        <button ion-button small clear icon-only>
-          <i class="pe-7s-user"></i>
-        </button>
-      </ion-col>
-      <ion-col no-padding text-right>
-        <ion-label *ngIf="chatText && chatText.length > textMaxLength" color="danger" class="message-warning">
-          Your message is {{chatText.length}} characters too long.
-        </ion-label>
-      </ion-col>
-    </ion-row>-->
     <ion-row>
       <ion-col col-1 no-padding>
-          <button ion-button clear icon-only item-right (click)="switchEmojiPicker()" color="white">
-              <ion-icon name="md-happy"></ion-icon>
+          <button ion-button clear icon-only item-right (click)="presentActionSheet()" color="white">
+              <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
           </button>
       </ion-col>
       <ion-col col-9 no-padding>
@@ -90,7 +68,6 @@
       <ion-col no-padding>
         <button ion-button (click)="sendMessage($event)" [disabled]="!chatText || (chatText && chatText.length > textMaxLength)" color="white" class="button-send" small clear icon-only>
           <ion-icon name="md-send"></ion-icon>
-          <!--<i class="pe-7s-paper-plane"></i>-->
         </button>
       </ion-col>
     </ion-row>

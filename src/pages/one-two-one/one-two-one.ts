@@ -6,6 +6,7 @@ import { ChathandlingProvider } from '../../providers/chathandling/chathandling'
 import { AuthenticationProvider , UserModel } from '../../providers/authentication/authentication';
 import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
 import { MessageimagehandlerProvider } from '../../providers/messageimagehandler/messageimagehandler';
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 
 /**
  * Generated class for the OneTwoOnePage page.
@@ -54,7 +55,8 @@ export class OneTwoOnePage {
     private loghandlingProvider: LoghandlingProvider,
     private loadingController:LoadingController,
     private messageimagehandlerProvider: MessageimagehandlerProvider, 
-    private authenticationProvider: AuthenticationProvider) {
+    private authenticationProvider: AuthenticationProvider,
+    private actionSheetProvider: ActionSheetProvider) {
     this.user = this.navParams.get('user');
 
     this.loading = this.loadingController.create({
@@ -87,7 +89,8 @@ export class OneTwoOnePage {
     this.loghandlingProvider.showLog(this.TAG, this.channelId);
 
     this.chatProvider.getOneTwoOneMessages(this.channelId)
-      .subscribe((messages => this.chatMessages = messages));
+      .subscribe(messages => {this.chatMessages = messages;
+      this.loghandlingProvider.showLog(this.TAG,"message subscribed")});
 
     if (this.platform.is('cordova')) {
       this.keyboard.onKeyboardShow()
@@ -213,12 +216,20 @@ export class OneTwoOnePage {
         this.chatText = '';
         this.scrollDown();
       }, (error) => {
-          this.loghandlingProvider.showLog(this.TAG, error.toString());
+        this.loghandlingProvider.showLog(this.TAG, error.toString());
+        this.loading.dismiss();
       })
     }).catch((err) => {
       alert(err);
       this.loading.dismiss();
     })
+  }
+
+  /**
+   * Generate action sheet for different things.
+   */
+  presentActionSheet() {
+    this.actionSheetProvider.presentActionSheet();
   }
 
 }
