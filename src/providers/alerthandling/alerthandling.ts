@@ -17,10 +17,12 @@ export class AlerthandlingProvider {
 
   /**
    * Constructor of AlerthandlingProvider for basic initialisation stuff.
-   * @param alertCtrl AlertController for create alert
+   * @param alertController AlertController for create alert
    * @param logServiceProvider log handling service instance.
    */
-  constructor(private alertCtrl: AlertController, private loghandlingProvider: LoghandlingProvider) {
+  constructor(
+    private alertController: AlertController, 
+    private loghandlingProvider: LoghandlingProvider) {
     this.loghandlingProvider.showLog(this.TAG,'Constructor UtilityServiceProvider Provider');
   }
 
@@ -29,7 +31,7 @@ export class AlerthandlingProvider {
    * @param message value to display as message in alert dialog.
    */
   public presentAlert(title: string, message: string) {
-    this.alert = this.alertCtrl.create({
+    this.alert = this.alertController.create({
       title: title,
       subTitle: message,
       buttons: ['OK']
@@ -39,7 +41,7 @@ export class AlerthandlingProvider {
 
   public confirmAlert(title: string, message: string) {
     return new Promise((resolve, reject) => {
-      let alert = this.alertCtrl.create({
+      let alert = this.alertController.create({
         title: title,
         message: message,
         buttons: [
@@ -57,6 +59,33 @@ export class AlerthandlingProvider {
             }
           }
         ]
+      });
+      alert.present();
+    });
+  }
+
+  public editAlert(title: string, inputName: string, inputPlaceholder: string)
+  {
+    return new Promise((resolve, reject) => {
+      let alert = this.alertController.create({
+        title: title,
+        inputs: [{
+          name: inputName,
+          placeholder: inputPlaceholder
+        }],
+        buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            reject("");
+          }
+        },
+        {
+          text: 'Edit',
+          handler: data => {
+            resolve(data);
+          }
+        }]
       });
       alert.present();
     });

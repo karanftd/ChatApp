@@ -77,7 +77,8 @@ export class MessageimagehandlerProvider {
             reader.readAsArrayBuffer(resFile);
             reader.onloadend = (evt: any) => {
               var imgBlob = new Blob([evt.target.result], { type: 'image/jpeg' });
-              var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid);
+              var uuid = this.guid();
+              var imageStore = this.firestore.ref('/picmsgs').child(firebase.auth().currentUser.uid).child('picmsg' + uuid);
               imageStore.put(imgBlob).then((res) => {
                 resolve(res.downloadURL);
               }).catch((err) => {

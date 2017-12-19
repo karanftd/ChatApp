@@ -179,7 +179,7 @@ export class AuthenticationProvider {
   }
 
   /**
-   * From get user details from firebase current user. 
+   * Get user details from firebase current user. 
    */
   getuserdetails() {
     var promise = new Promise((resolve, reject) => {
