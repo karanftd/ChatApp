@@ -24,10 +24,12 @@ import { LocalstorageProvider } from '../providers/localstorage/localstorage';
 import { ContactslistProvider } from '../providers/contactslist/contactslist';
 import { ChathandlingProvider } from '../providers/chathandling/chathandling';
 import { EmojiProvider } from '../providers/emojiprovider/emojiprovider';
+import { AutoSizeDirective } from '../directives/auto-size/auto-size';
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    AutoSizeDirective
   ],
   imports: [
     BrowserModule,

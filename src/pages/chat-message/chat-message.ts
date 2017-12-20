@@ -5,6 +5,12 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { ChathandlingProvider } from '../../providers/chathandling/chathandling';
 import { UserModel } from '../../providers/authentication/authentication';
 
+/**
+ * Generated class for the ParsonalchatPage page.
+ *
+ * Page display list of messages for general channel.
+ */
+
 @IonicPage()
 @Component({
   selector: 'page-chat-message',

@@ -3,8 +3,6 @@ import { IonicPage, NavController, LoadingController } from 'ionic-angular';
 
 import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
 import { AuthenticationProvider } from '../../providers/authentication/authentication';
-//import { ConstantProvider } from '../../providers/constant/constant';
-//import { ApihandlingProvider } from '../../providers/apihandling/apihandling';
 import { usercredentials } from '../../models/interfaces/usercredentials';
 
 /**
@@ -32,8 +30,7 @@ export class LoginPage {
    * @param apihandlingProvider provider having methods for api calling 
    */
   constructor(private navCtrl: NavController, private loadingCtrl: LoadingController,
-  private authenticationProvider: AuthenticationProvider, private loghandlingProvider: LoghandlingProvider, 
-  /*private apihandlingProvider: ApihandlingProvider*/) {
+  private authenticationProvider: AuthenticationProvider, private loghandlingProvider: LoghandlingProvider) {
   }
 
   /**
@@ -50,13 +47,6 @@ export class LoginPage {
         this.loghandlingProvider.showLog(this.TAG, "from error block" + error.message);
         loading.dismiss();
       });
-
-    /*this.loghandlingProvider.showLog(this.TAG, "calling api");
-    this.apihandlingProvider.callRequest(ConstantProvider.BASE_URL + "getUserToChat").subscribe(res => {
-      this.loghandlingProvider.showLog(this.TAG, res.name +" : "+ res.uid);
-    },err => {
-      this.loghandlingProvider.showLog(this.TAG, err.message);
-    });*/
   }
 
   /**

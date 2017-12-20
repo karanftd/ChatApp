@@ -32,6 +32,23 @@ export class ChathandlingProvider {
   }
 
   /**
+   * Get all messages from table for general channel.
+   * @param channelId channel id for chat messages.
+   */
+  getPersonalMessages(channelId: string) {
+
+    return this.angularFireDatabase.list(`${tableNames.PersonalMessage}/${channelId}/${tableNames.PersonalMessage}`)
+      .map(messages => messages.map((item) => {
+        item.day = new Date(item.timestamp || Date.now()).getDate();
+
+        if (item.from)
+          item.user = this.authenticationProvider.getFullProfile(item.from);
+
+          return item;
+      }));
+  }
+
+  /**
    * Get last specific number of messages.
    * @param channelId channel id for chat messages.
    * @param count number of message count.
@@ -56,6 +73,21 @@ export class ChathandlingProvider {
    */
   sendMessage(userId: string, message: string, channelId: string = 'general') {
     return this.angularFireDatabase.list(`${tableNames.ChatMessage}/${channelId}`)
+      .push({
+        from: userId,
+        message: message,
+        timestamp: firebase.database['ServerValue']['TIMESTAMP']
+      });
+  }
+
+  /**
+   * Add entry in database for send message.
+   * @param userId user id for from field.
+   * @param message message string.
+   * @param channelId channel id for chat messages.
+   */
+  sendPersonalMessage(userId: string, message: string, channelId: string) {
+    return this.angularFireDatabase.list(`${tableNames.PersonalMessage}/${channelId}/${tableNames.PersonalMessage}`)
       .push({
         from: userId,
         message: message,

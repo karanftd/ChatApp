@@ -14,4 +14,5 @@ export const tableNames = {
     ChatChannel        : 'chat_channels',
     ChatMember         : 'chat_members',
     ChatMessage        : 'chat_messages',
+    PersonalMessage    : 'messages',
 };
