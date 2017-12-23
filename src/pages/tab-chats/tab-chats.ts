@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, App, ToastController } from 'ionic-angular';
+import { IonicPage, App, ToastController, MenuController } from 'ionic-angular';
 
 import { AuthenticationProvider, UserModel } from '../../providers/authentication/authentication';
 import { ChathandlingProvider, MessageModel } from '../../providers/chathandling/chathandling';
@@ -22,7 +22,10 @@ export class TabChatsPage {
   private TAG: string = "TabChatsPage";
 
   constructor(private app: App, private toastController: ToastController, private authenticationProvider: AuthenticationProvider,
-    private chathandlingProvider: ChathandlingProvider, private loghandlingProvider: LoghandlingProvider) {}
+    private chathandlingProvider: ChathandlingProvider, private loghandlingProvider: LoghandlingProvider,
+    private menuController: MenuController) {
+      this.menuController.enable(true, 'navigation_menu');
+    }
   
   /**
    * Called after view load.

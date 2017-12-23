@@ -4,6 +4,11 @@
           <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>Messages</ion-title>
+        <ion-buttons end>
+          <button ion-button (click)="sendPicMsg()">
+          <ion-icon name="camera"></ion-icon>
+          </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
@@ -22,14 +27,16 @@
       <ion-item no-lines>
         <ion-label>
           <p *ngIf="message.from == user.uid">
-            <span class="message-text right">{{message.message}}</span>
+            <span *ngIf="message.message.substring(0, 4) != 'http'" class="message-text right">{{message.message}}</span>
+            <img class="message-img right" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" src="{{message.message}}">
             <span class="message-time">{{message.timestamp | date:"hh:mm a"}}</span>
           </p>
           <p *ngIf="message.from != user.uid">
             <ion-avatar>
               <img class="user-image" [src]="(message.user | async)?.photoURL" />
             </ion-avatar>
-            <span class="message-text left">{{message.message}}</span>
+            <span *ngIf="message.message.substring(0, 4) != 'http'" class="message-text left">{{message.message}}</span>
+            <img class="message-img left" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" src="{{message.message}}">
             <span class="message-time">{{message.timestamp | date:"hh:mm a"}}</span>
           </p>
         </ion-label>

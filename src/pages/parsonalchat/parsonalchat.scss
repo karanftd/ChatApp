@@ -22,6 +22,47 @@ page-parsonalchat {
 			}
 		}
 
+		.message-img{		
+			width: 200;
+			max-width: 80%;
+			height: 200;
+			max-height: 50%;
+			display: inline-block;
+			padding: 8px;
+
+			&.left {
+				float: left !important;
+				margin-left: 46px;
+			}
+
+			&.left:before {
+				position: absolute;
+				left: 56px;
+				content:'';
+				width: 0;
+				height: 0;
+				border-width: 7px 14px 7px 0;
+				border-style: solid;
+				border-color: transparent #a7e4ed transparent;
+			}
+
+			&.right {
+				margin-right: 54px;
+				float: right !important;
+			}
+
+			&.right:before {
+				position: absolute;
+				right: 64px;
+				content:'';
+				width: 0;
+				height: 0;
+				border-width: 7px 0 7px 14px;
+				border-style: solid;
+				border-color: transparent #d7e4ed transparent;
+			}
+		}
+
 		.message-text {
 			display: inline-block;
 			padding: 8px;

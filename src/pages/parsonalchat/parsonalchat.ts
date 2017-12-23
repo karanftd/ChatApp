@@ -7,6 +7,7 @@ import { UserModel } from '../../providers/authentication/authentication';
 import { ApihandlingProvider } from '../../providers/apihandling/apihandling';
 import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
 import { ConstantProvider } from '../../providers/constant/constant';
+import { MessageimagehandlerProvider } from '../../providers/messageimagehandler/messageimagehandler';
 
 /**
  * Generated class for the ParsonalchatPage page.
@@ -44,6 +45,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
    * @param apihandlingProvider provides api methods.
    * @param loghandlingProvider log handling provider.
    * @param loadingController loading controller.
+   * @param messageimagehandlerProvider handle image uploading on firebase.
    */
   constructor( 
     private navParams: NavParams,
@@ -52,10 +54,13 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     private chatProvider: ChathandlingProvider,
     private apihandlingProvider: ApihandlingProvider,
     private loghandlingProvider: LoghandlingProvider,
-    private loadingController:LoadingController) {
+    private loadingController:LoadingController,
+    private messageimagehandlerProvider: MessageimagehandlerProvider) {
     this.user = this.navParams.get('user');
 
-    this.loading = this.loadingController.create();
+    this.loading = this.loadingController.create({
+      content: 'Please wait'
+    });
 
     this.loghandlingProvider.showLog(this.TAG, "calling api");
     this.loading.present();
@@ -113,7 +118,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
           this.chatText = '';
           this.scrollDown();
       }, (error) => {
-          console.log(error);
+          this.loghandlingProvider.showLog(this.TAG, error.toString());
       });
   }
 
@@ -190,6 +195,26 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
         this.showEmojiPicker = false;
         this.content.resize();
         this.scrollToBottom();
-    }
+  }
+
+  /**
+   * Send image as message from camera button.
+   */
+  sendPicMsg() {
+    this.loading.present();
+    this.messageimagehandlerProvider.imageMassegeUpload().then((imgurl) => {
+      this.loading.dismiss();
+      this.chatProvider.sendPersonalMessage((this.user as any).$key, imgurl.toString() , this.channelId)
+      .then(() => {
+        this.chatText = '';
+        this.scrollDown();
+      }, (error) => {
+          this.loghandlingProvider.showLog(this.TAG, error.toString());
+      })
+    }).catch((err) => {
+      alert(err);
+      this.loading.dismiss();
+    })
+  }
 
 }

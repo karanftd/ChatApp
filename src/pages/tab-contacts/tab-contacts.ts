@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController } from 'ionic-angular';
+import { IonicPage, LoadingController, MenuController } from 'ionic-angular';
 import { ContactslistProvider } from '../../providers/contactslist/contactslist';
 import { LocalstorageProvider } from '../../providers/localstorage/localstorage';
 
@@ -19,8 +19,9 @@ export class TabContactsPage {
   email: string;
 
   constructor(private loadingController: LoadingController, private contactslistProvider: ContactslistProvider,
-  private localstorageProvider: LocalstorageProvider) {
-    this.email = this.localstorageProvider.getEmail()
+  private localstorageProvider: LocalstorageProvider,private menuController: MenuController) {
+    this.email = this.localstorageProvider.getEmail();
+    this.menuController.enable(true, 'navigation_menu');
   }
 
   ionViewDidLoad() {

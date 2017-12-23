@@ -74,10 +74,11 @@ export class MyApp {
           // get current active page
           let view = this.nav.getActive();
           if(this.nav.canGoBack()){
-            let loading = this.loadingController.create();
-            loading.present();
             this.nav.pop();
             if (view.component.name === "ChatMessagePage" || view.component.name === "ParsonalchatPage") {
+              this.loghandlingProvider.showLog(this.TAG,'set root from component');
+              let loading = this.loadingController.create();
+              loading.present();
               this.nav.setRoot("TabsPage");
               loading.dismiss();
             }

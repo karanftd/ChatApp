@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, MenuController } from 'ionic-angular';
 
 import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
 import { AuthenticationProvider } from '../../providers/authentication/authentication';
@@ -8,7 +8,7 @@ import { usercredentials } from '../../models/interfaces/usercredentials';
 /**
  * Generated class for the LoginPage page.
  *
- * Login page provide user authentication using facebook.
+ * Login page provide user authentication using  email-password or facebook.
  */
 
 @IonicPage()
@@ -27,10 +27,13 @@ export class LoginPage {
    * @param loadingCtrl loading controller (loading indication)
    * @param authenticationProvider authentication provider different auth methods
    * @param loghandlingProvider log handler 
-   * @param apihandlingProvider provider having methods for api calling 
+   * @param apihandlingProvider provider having methods for api calling
+   * @param menuController used for disable menu.
    */
   constructor(private navCtrl: NavController, private loadingCtrl: LoadingController,
-  private authenticationProvider: AuthenticationProvider, private loghandlingProvider: LoghandlingProvider) {
+  private authenticationProvider: AuthenticationProvider, private loghandlingProvider: LoghandlingProvider,
+  private menuController: MenuController) {
+    this.menuController.enable(false, 'navigation_menu');
   }
 
   /**
@@ -72,26 +75,20 @@ export class LoginPage {
      this.authenticationProvider.login(this.credentials).then((res: any) => {
       if (!res.code){
         this.loghandlingProvider.showLog(this.TAG, "user get auth token" + res.user);
-        this.updateProfile(res.user || res);
+        this.authenticationProvider.generateProfile(res.user || res);
         loading.dismiss();
         this.navCtrl.setRoot('TabsPage');
       }
       else{
-        console.log("from error block" + res);
+        this.loghandlingProvider.showLog(this.TAG, "from error block" + res);
         loading.dismiss();
         alert(res);
       }
     })
   }
 
-  private updateProfile(user: any){
-    return this.authenticationProvider.updateProfile({
-      uid        : user.uid,
-      displayName: user.displayName,
-      email      : user.email,
-      photoURL   : user.photoURL,
-      providerData   : user.providerData[0]
-    });
+  signup(){
+    this.navCtrl.push('SignupPage');
   }
 
 }

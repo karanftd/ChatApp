@@ -59,6 +59,16 @@ export class AuthenticationProvider {
         return this.angularFireAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);    
   } 
 
+  public generateProfile(user: any){
+    return this.updateProfile({
+      uid        : user.uid,
+      displayName: user.displayName,
+      email      : user.email,
+      photoURL   : user.photoURL,
+      providerData   : user.providerData[0]
+    });
+  }
+
   /**
    * Update user profile according to user credentials on firebase.
    * @param user user details after login
@@ -72,7 +82,7 @@ export class AuthenticationProvider {
 
     this.localstorageProvider.setUsername(user.displayName);
     this.localstorageProvider.setEmail(user.email);
-      
+
     return this.angularFireDatabase.object(tableNames.User + '/' + user.uid).update(user);
   }
 
@@ -103,6 +113,27 @@ export class AuthenticationProvider {
           this.angularFireDatabase.object(tableNames.User + '/' + user.uid).subscribe((res) => observer.next(res));
       });
     });
+  }
+
+  /**
+   * Add new user on firebase.
+   * @param newuser user details for new user creation
+   */
+  adduser(newuser) {
+    var promise = new Promise((resolve, reject) => {
+      this.angularFireAuth.auth.createUserWithEmailAndPassword(newuser.email, newuser.password).then((res) => {
+        this.angularFireAuth.auth.currentUser.updateProfile({displayName: newuser.displayName, photoURL: newuser.photoUrl});
+        this.loghandlingProvider.showLog(this.TAG,'User created.')
+          this.angularFireAuth.auth.signInWithEmailAndPassword(newuser.email, newuser.password).then((res: any) => {
+              resolve(res);
+            }).catch((err) => {
+              reject(err);
+          })
+      }).catch((err) => {
+        reject(err);
+      })
+    })
+    return promise;
   }
 
 }
