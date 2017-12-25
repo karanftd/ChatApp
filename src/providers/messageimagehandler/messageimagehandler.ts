@@ -56,6 +56,7 @@ export class MessageimagehandlerProvider {
   imageMassegeUpload() {
     var promise = new Promise((resolve, reject) => {
         this.filechooser.open().then((url) => {
+          console.log("url : " + url);
           (<any>window).FilePath.resolveNativePath(url, (result) => {
             this.nativepath = result;
             (<any>window).resolveLocalFileSystemURL(this.nativepath, (res) => {

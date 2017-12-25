@@ -89,4 +89,6 @@
     <engine name="android" spec="~6.2.3" />
     <allow-navigation href="http://10.103.2.114:8100" />
     <plugin name="cordova-plugin-filechooser" spec="^1.0.1" />
+    <plugin name="cordova-plugin-filepath" spec="^1.1.0" />
+    <plugin name="cordova-plugin-file" spec="^4.3.3" />
 </widget>

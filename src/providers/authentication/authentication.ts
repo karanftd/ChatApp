@@ -21,6 +21,7 @@ import { LocalstorageProvider } from '../localstorage/localstorage'
 export class AuthenticationProvider {
 
   private TAG: string = 'AuthenticationProvider';
+  firedata = firebase.database().ref(tableNames.User);
 
   /**
    * Basic constructor for LogServiceProvider.
@@ -35,7 +36,7 @@ export class AuthenticationProvider {
    * sign in with facebook
    */
   signInWithFacebook() {
-     this.loghandlingProvider.showLog(this.TAG, "sign in with facebook");
+    this.loghandlingProvider.showLog(this.TAG, "sign in with facebook");
     if (this.platform.is('cordova')) {
       return this.platform.ready().then(() => {
         return this.facebook.login(['email', 'public_profile']).then((res) => {
@@ -132,6 +133,72 @@ export class AuthenticationProvider {
       }).catch((err) => {
         reject(err);
       })
+    })
+    return promise;
+  }
+
+  /**
+   * From get user details from firebase current user. 
+   */
+  getuserdetails() {
+    var promise = new Promise((resolve, reject) => {
+    this.firedata.child(firebase.auth().currentUser.uid).once('value', (snapshot) => {
+      resolve(snapshot.val());
+    }).catch((err) => {
+      reject(err);
+      })
+    })
+    return promise;
+  }
+
+  /**
+   * Update display name enterd in dialog.
+   * @param newname display name to update.
+   */
+  updatedisplayname(newname) {
+    var promise = new Promise((resolve, reject) => {
+      this.angularFireAuth.auth.currentUser.updateProfile({
+      displayName: newname,
+      photoURL: this.angularFireAuth.auth.currentUser.photoURL
+    }).then(() => {
+      this.firedata.child(firebase.auth().currentUser.uid).update({
+        displayName: newname,
+        photoURL: this.angularFireAuth.auth.currentUser.photoURL,
+        uid: this.angularFireAuth.auth.currentUser.uid
+      }).then(() => {
+        resolve({ success: true });
+      }).catch((err) => {
+        reject(err);
+      })
+      }).catch((err) => {
+        reject(err);
+    })
+    })
+    return promise;
+  }
+
+  /**
+   * Update profile picture by uploading it in storage.
+   * @param imageurl imageurl of profile picture.
+   */
+  updateimage(imageurl) {
+    var promise = new Promise((resolve, reject) => {
+        this.angularFireAuth.auth.currentUser.updateProfile({
+            displayName: this.angularFireAuth.auth.currentUser.displayName,
+            photoURL: imageurl      
+        }).then(() => {
+            firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({
+            displayName: this.angularFireAuth.auth.currentUser.displayName,
+            photoURL: imageurl,
+            uid: firebase.auth().currentUser.uid
+            }).then(() => {
+                resolve({ success: true });
+                }).catch((err) => {
+                    reject(err);
+                })
+        }).catch((err) => {
+              reject(err);
+            })  
     })
     return promise;
   }

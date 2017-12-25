@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, LoadingController } from 'ionic-angular';
+import { Nav, Platform, LoadingController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -27,11 +27,17 @@ export class MyApp {
    * @param splashScreen 
    * @param loghandlingProvider 
    * @param localstorageProvider
+   * @param events
    */
   constructor(private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, 
   private loghandlingProvider: LoghandlingProvider, private authenticationProvider: AuthenticationProvider,
-  private loadingController: LoadingController, private localstorageProvider: LocalstorageProvider) {
+  private loadingController: LoadingController, private localstorageProvider: LocalstorageProvider,
+  private events: Events) {
     this.initializeApp();
+
+    this.events.subscribe('user:displayName updated', (nickname) => {
+      this.username = nickname;
+    });
     
     this.pages = [
       { title: 'Home', component: 'TabsPage' }
