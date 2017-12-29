@@ -44,8 +44,14 @@ export class LoginPage {
     loading.present();
     this.authenticationProvider.signInWithFacebook()
       .then((res) => {
-        this.loghandlingProvider.showLog(this.TAG, "user get auth token" + res.user);
-        loading.dismiss();
+        this.loghandlingProvider.showLog(this.TAG, "Back to login.");
+        if(res){
+          this.loghandlingProvider.showLog(this.TAG, "user get auth token" + res.user);
+          loading.dismiss();
+        } else {
+          loading.dismiss();
+          alert(res);
+        }
       }, (error) => {
         this.loghandlingProvider.showLog(this.TAG, "from error block" + error.message);
         loading.dismiss();

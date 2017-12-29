@@ -18,7 +18,7 @@ import { LocalstorageProvider } from '../../providers/localstorage/localstorage'
 export class TabProfilePage {
 
   avatar: string;
-  displayName: string;
+  displayName: string = "Add nick name";
 
   /**
    * Default constructor.
@@ -52,7 +52,8 @@ export class TabProfilePage {
    */
   loaduserdetails() {
     this.authenticationProvider.getuserdetails().then((res: any) => {
-      this.displayName = res.displayName;
+      if(res.displayName)
+        this.displayName = res.displayName;
       this.ngZone.run(() => {
         this.avatar = res.photoURL;
       })
@@ -97,17 +98,14 @@ export class TabProfilePage {
                   this.displayName = data.nickname;
                 })
               }
- 
               else {
                 statusalert.setTitle('Failed');
                 statusalert.setSubTitle('Your nickname was not changed');
                 statusalert.present();
-              }
-                             
+              }              
             })
           }
         }
-        
       }]
     });
     alert.present();

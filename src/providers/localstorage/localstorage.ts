@@ -17,6 +17,9 @@ export class LocalstorageProvider {
     
   }
 
+  /**
+   * Get username from local storage.
+   */
   public getUsername() {
     let username = localStorage.getItem(ConstantProvider.KEY_USERNAME);
     if (username === null || username === undefined) {
@@ -25,11 +28,18 @@ export class LocalstorageProvider {
     return username;
   }
 
+  /**
+   * Set username to local storage.
+   * @param username username to set in local storage.
+   */
   public setUsername(username) {
     this.loghandlingProvider.showLog(this.TAG, username + ' as username stored');
     localStorage.setItem(ConstantProvider.KEY_USERNAME, username);
   }
 
+  /**
+   * Get email form local storage.
+   */
   public getEmail() {
     let email = localStorage.getItem(ConstantProvider.KEY_EMAIL);
     if (email === null || email === undefined) {
@@ -38,6 +48,9 @@ export class LocalstorageProvider {
     return email;
   }
 
+  /**
+   * Set email to local storage.
+   */
   public setEmail(email) {
     this.loghandlingProvider.showLog(this.TAG, email + ' as email stored');
     localStorage.setItem(ConstantProvider.KEY_EMAIL, email);

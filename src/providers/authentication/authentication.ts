@@ -35,20 +35,22 @@ export class AuthenticationProvider {
   /**
    * sign in with facebook
    */
-  signInWithFacebook() {
+  signInWithFacebook(): firebase.Promise<any> {
     this.loghandlingProvider.showLog(this.TAG, "sign in with facebook");
     if (this.platform.is('cordova')) {
       return this.platform.ready().then(() => {
         return this.facebook.login(['email', 'public_profile']).then((res) => {
-           this.loghandlingProvider.showLog(this.TAG, "credential " + res.authResponse.accessToken);
-          return res.authResponse.accessToken;
+          this.loghandlingProvider.showLog(this.TAG, "credential " + res.authResponse.accessToken);
+          const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+          this.loghandlingProvider.showLog(this.TAG,"credential " + res.authResponse.accessToken);
+          return this.angularFireAuth.auth.signInWithCredential(facebookCredential);
         }, (error) => {
-           this.loghandlingProvider.showLog(this.TAG, "from error block of auth" + error.message);
-          return error.message;
-      });
+          this.loghandlingProvider.showLog(this.TAG,"from error block of auth" + error.message);
+        });
       });
     } else {
-       this.loghandlingProvider.showLog(this.TAG, "else block for none cordova.");
+      this.loghandlingProvider.showLog(this.TAG,"sign in with popup called");
+      return this.angularFireAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
     }
   }
 
@@ -60,6 +62,10 @@ export class AuthenticationProvider {
         return this.angularFireAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);    
   } 
 
+  /**
+   * This function invoke update profile method using user's param.
+   * @param user user details
+   */
   public generateProfile(user: any){
     return this.updateProfile({
       uid        : user.uid,
@@ -102,7 +108,7 @@ export class AuthenticationProvider {
   }
 
   /**
-   * get full profile
+   * get full profile.
    */
   getFullProfile(uid?: string): Observable<UserModel> {
     if (uid)
