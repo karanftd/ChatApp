@@ -43,7 +43,8 @@ export class MyApp {
     });
     
     this.pages = [
-      { title: 'Set Online', component: 'SetOnlinePage' }
+      { title: 'Set Online', component: 'SetOnlinePage' },
+      { title: 'Contacts', component: 'TabContactsPage' }
     ];
   }
 

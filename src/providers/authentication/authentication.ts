@@ -23,16 +23,20 @@ import { LocalstorageProvider } from '../localstorage/localstorage'
 export class AuthenticationProvider {
 
   private TAG: string = 'AuthenticationProvider';
-  firedata = firebase.database().ref(tableNames.User);
+  private firedata = firebase.database().ref(tableNames.User);
 
   /**
    * Basic constructor for LogServiceProvider.
    */
-  constructor(private loghandlingProvider: LoghandlingProvider, private platform: Platform,
-  private facebook: Facebook, private angularFireAuth: AngularFireAuth, 
-  private angularFireDatabase: AngularFireDatabase, private localstorageProvider: LocalstorageProvider,
-  private events: Events, private googleplus: GooglePlus) {
-    this.loghandlingProvider.showLog(this.TAG,'Hello AuthenticationProvider Provider');
+  constructor(
+    private loghandlingProvider: LoghandlingProvider, 
+    private platform: Platform,
+    private facebook: Facebook, 
+    private angularFireAuth: AngularFireAuth, 
+    private angularFireDatabase: AngularFireDatabase, 
+    private localstorageProvider: LocalstorageProvider,
+    private events: Events, 
+    private googleplus: GooglePlus) {
   }
 
   /**
@@ -132,6 +136,7 @@ export class AuthenticationProvider {
    * Sign out user.
    */
   signOut(): firebase.Promise<any> {
+    firebase.database().ref("presence/" + firebase.auth().currentUser.uid).remove();
     return this.angularFireAuth.auth.signOut();
   }
 
@@ -242,6 +247,18 @@ export class AuthenticationProvider {
             })  
     })
     return promise;
+  }
+
+  handleUserPresence(userId: string){
+    this.loghandlingProvider.showLog(this.TAG, "Form on handleUserPresence");
+    var connectedRef = firebase.database().ref(".info/connected");
+    var presenceRef = firebase.database().ref("presence/" + userId);
+    connectedRef.on("value", function(snap) {
+      if (snap.val()) {
+        presenceRef.onDisconnect().remove();
+        presenceRef.set(firebase.database['ServerValue']['TIMESTAMP']);
+      }
+    });
   }
 
 }

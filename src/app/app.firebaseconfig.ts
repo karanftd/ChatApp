@@ -20,4 +20,5 @@ export const tableNames = {
     PersonalMessage    : 'messages',
     OneTwoOneMessages  : 'one_two_one',
     OnlineUser         : 'user',
+    Presence           : 'presence',
 };

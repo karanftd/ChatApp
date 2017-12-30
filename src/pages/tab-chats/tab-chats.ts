@@ -41,9 +41,14 @@ export class TabChatsPage {
    * Called after view load.
    */
   ionViewDidLoad() {
+
     this.loghandlingProvider.showLog(this.TAG,'ionViewDidLoad');
+
     this.authenticationProvider.getFullProfile()
-      .subscribe((user: any) => this.user = user);
+      .subscribe((user: any) => {
+        this.user = user;
+        this.authenticationProvider.handleUserPresence(this.user.uid);
+      });
     
     this.chathandlingProvider.getLastMessages()
       .subscribe((messages) => this.messages = messages);
