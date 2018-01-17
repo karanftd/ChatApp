@@ -28,6 +28,7 @@
         "@ionic-native/file-chooser": "^4.3.2",
         "@ionic-native/file-path": "^4.3.2",
         "@ionic-native/geolocation": "^4.3.3",
+        "@ionic-native/google-maps": "^4.4.2",
         "@ionic-native/google-plus": "^3.14.0",
         "@ionic-native/keyboard": "^4.3.2",
         "@ionic-native/push": "^4.3.3",
@@ -44,6 +45,7 @@
         "cordova-plugin-facebook4": "^1.9.1",
         "cordova-plugin-file": "^4.3.3",
         "cordova-plugin-geolocation": "^2.4.3",
+        "cordova-plugin-googlemaps": "^2.1.1",
         "cordova-plugin-googleplus": "^5.1.1",
         "cordova-plugin-ionic-webview": "^1.1.15",
         "cordova-plugin-splashscreen": "^4.0.3",
@@ -52,6 +54,7 @@
         "firebase": "^3.9.0",
         "ionic-angular": "^3.7.1",
         "ionic-plugin-keyboard": "^2.2.1",
+        "ionic-swipe-all": "^1.1.0",
         "ionicons": "3.0.0",
         "promise-polyfill": "^6.0.2",
         "rxjs": "5.4.3",
@@ -82,7 +85,11 @@
                 "REVERSED_CLIENT_ID": "69-7Am9CsT3BeVnnXgTV1z8Y"
             },
             "cordova-plugin-camera": {},
-            "cordova-plugin-file": {}
+            "cordova-plugin-file": {},
+            "cordova-plugin-googlemaps": {
+                "API_KEY_FOR_ANDROID": "AIzaSyC7S1goUqrkk-Zl9E0wdL2XC25hw2dfOqc",
+                "API_KEY_FOR_IOS": "AIzaSyC4mtPdU0HbVT5VnOaEvIIddpaps7mFjXg"
+            }
         },
         "platforms": [
             "android",

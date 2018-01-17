@@ -8,6 +8,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { HttpModule } from '@angular/http';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Camera } from '@ionic-native/camera';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
@@ -43,7 +44,7 @@ import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -62,6 +63,7 @@ import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
     Keyboard,
     Camera,
     Push,
+    GoogleMaps,
     ApihandlingProvider,
     AngularFireAuth,
     LocalstorageProvider,

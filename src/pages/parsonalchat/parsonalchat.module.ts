@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { ParsonalchatPage } from './parsonalchat';
 import { EmojiPickerComponentModule } from "../../components/emoji-picker/emoji-picker.module";
 import { EmojiProvider } from "../../providers/emojiprovider/emojiprovider";
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { EmojiProvider } from "../../providers/emojiprovider/emojiprovider";
     ParsonalchatPage
   ],
   providers:[
-    EmojiProvider
+    EmojiProvider,
+    Geolocation
   ]
 })
 export class ParsonalchatPageModule {}

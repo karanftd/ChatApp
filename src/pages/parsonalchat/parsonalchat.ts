@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IonicPage, NavParams, Platform, TextInput, Content, LoadingController, NavController } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
-
+import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker } 
+from '@ionic-native/google-maps';
 import { ChathandlingProvider } from '../../providers/chathandling/chathandling';
 import { UserModel } from '../../providers/authentication/authentication';
 import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
@@ -9,6 +10,8 @@ import { ConstantProvider } from '../../providers/constant/constant';
 import { MessageimagehandlerProvider } from '../../providers/messageimagehandler/messageimagehandler';
 import { OnlineHandlingProvider } from '../../providers/online-handling/online-handling';
 import { AlerthandlingProvider } from '../../providers/alerthandling/alerthandling';
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { Geolocation } from '@ionic-native/geolocation';
 
 /**
  * Generated class for the ParsonalchatPage page.
@@ -31,6 +34,8 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
   private loading: any;
   private favoriteFlag: any;
   private key: number;
+  private map: GoogleMap;
+  private elementMap: HTMLElement;
 
   showEmojiPicker = false;
   @ViewChild('chat_input') messageInput: TextInput;
@@ -59,7 +64,10 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     private messageimagehandlerProvider: MessageimagehandlerProvider,
     private onlineHandlingProvider: OnlineHandlingProvider,
     private alerthandlingProvider: AlerthandlingProvider,
-    private navController: NavController) {
+    private navController: NavController,
+    private actionSheetProvider: ActionSheetProvider,
+    private geolocation: Geolocation,
+    private googleMaps: GoogleMaps) {
     this.user = this.navParams.get('user');
     this.channelId = this.navParams.get('channelId');
 
@@ -260,6 +268,9 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * On swipe delete chat.
+   */
   deleteChatHandling() {
     this.alerthandlingProvider.confirmAlert("Confirm delete", "Are you sure you want to delete the chat?").then((res) => {
       if (this.favoriteFlag == false) {
@@ -284,4 +295,103 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     this.favoriteFlag = true;
     this.onlineHandlingProvider.addFavoriteChat(this.user.uid, this.channelId, this.key);
   }
+
+  /**
+   * Generate action sheet for different things.
+   */
+  presentActionSheet() {
+    this.actionSheetProvider.presentActionSheet().then((res) => {
+      this.loghandlingProvider.showLog(this.TAG, 'res : ' + res);
+      if (res == 'Camera'){
+
+      }else if(res == 'Gallery'){
+
+      }else if(res == 'Location'){
+        this.loghandlingProvider.showLog(this.TAG, 'from condition');
+        let mapMessage: string;
+        this.geolocation.getCurrentPosition().then((resp) => {          
+          mapMessage = "{latitude:"+resp.coords.latitude+",longitude:"+resp.coords.longitude+"}";
+          this.loghandlingProvider.showLog(this.TAG, 'location message : ' + mapMessage);
+          this.generateMap(resp.coords.latitude, resp.coords.latitude);
+          this.chatProvider.sendPersonalMessage((this.user as any).$key, mapMessage, this.channelId)
+          .then(() => {
+            this.chatText = '';
+            this.scrollDown();
+          }, (error) => {
+            this.loghandlingProvider.showLog(this.TAG, error.toString());
+          });
+        }).catch((error) => {
+          this.loghandlingProvider.showLog(this.TAG, 'Error getting location ' + error);
+        });
+      }else if(res == 'Contact'){
+        
+      }
+    }, err => {
+      this.loghandlingProvider.showLog(this.TAG, "Action sheet : " + err);
+    });
+  }
+
+  parseLocationMessage(message){
+    let jsonMessage = JSON.parse(message);
+    this.generateMap(jsonMessage.latitude,jsonMessage.longitude);
+  }
+
+  generateMap(latitude: number, longitude: number){
+    this.loghandlingProvider.showLog(this.TAG, 'From generate map.');
+    this.elementMap = document.getElementById('mapcanvas');
+    let mapOptions: GoogleMapOptions = {
+       camera: {
+         target: {
+           lat: latitude,
+           lng: longitude
+         },
+      zoom: 18,
+      tilt: 30
+       }
+    };
+    this.loghandlingProvider.showLog(this.TAG, 'Create map.');
+    this.map = GoogleMaps.create(this.elementMap, mapOptions);
+    this.map.one(GoogleMapsEvent.MAP_READY)
+    .then(() => {
+      this.loghandlingProvider.showLog(this.TAG, 'Map is Ready To Use');
+    }, err => {
+      this.loghandlingProvider.showLog(this.TAG, 'Map Error : ' + err);
+    });
+  }
+
+  /*generateMap(latitude: number, longitude: number){
+    let map: GoogleMap;
+
+    let mapOptions: GoogleMapOptions = {
+      camera: {
+        target: {
+          lat: latitude,
+          lng: longitude
+        },
+        zoom: 18,
+        tilt: 30
+      }
+    };
+
+    map = this.googleMaps.create('map_canvas', mapOptions);
+
+    // Wait the MAP_READY before using any methods.
+    map.one(GoogleMapsEvent.MAP_READY)
+      .then(() => {
+        console.log('Map is ready!');
+
+        // Now you can use all methods safely.
+        map.addMarker({
+            title: 'Ionic',
+            icon: 'blue',
+            animation: 'DROP',
+            position: {
+              lat: latitude,
+              lng: longitude
+            }
+          })
+
+      });
+  }*/
+
 }

@@ -31,20 +31,27 @@
       <ion-item no-lines>
         <ion-label>
           <p *ngIf="message.from == user.uid">
-            <span *ngIf="message.message.substring(0, 4) != 'http'" class="message-text right">{{message.message}}</span>
-            <img class="message-img right" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" src="{{message.message}}">
+            <span *ngIf="message.message.substring(0, 4) != 'http' && message.message.substring(0,10) != '{latitude:'" 
+            class="message-text right">{{message.message}}</span>
+            <img class="message-img right" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" 
+            src="{{message.message}}">
             <span class="message-time">{{message.timestamp | date:"hh:mm a"}}</span>
           </p>
           <p *ngIf="message.from != user.uid">
             <ion-avatar>
               <img class="user-image" [src]="(message.user | async)?.photoURL" />
             </ion-avatar>
-            <span *ngIf="message.message.substring(0, 4) != 'http'" class="message-text left">{{message.message}}</span>
-            <img class="message-img left" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" src="{{message.message}}">
+            <span *ngIf="message.message.substring(0, 4) != 'http' && message.message.substring(0,10) != '{latitude:'" 
+            class="message-text left">{{message.message}}</span>
+            <img class="message-img left" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" 
+            src="{{message.message}}">
             <span class="message-time">{{message.timestamp | date:"hh:mm a"}}</span>
           </p>
         </ion-label>
         {{message.message}}
+        <ion-card *ngIf="message.message.substring(0,12) == '{latitude:'">
+          {{getName()}}<div #mapcanvas class="mapcanvas" id="mapcanvas"></div>
+        </ion-card>
       </ion-item>
     </div>
   </ion-list>
@@ -52,33 +59,14 @@
 
 <ion-footer no-border [style.height]="showEmojiPicker ? '255px' : '55px'">
   <ion-navbar color="navBar">
-    <!--<ion-row>
-      <ion-col col-2 no-padding text-center>
-        <button ion-button small clear icon-only>
-          <i class="pe-7s-camera"></i>
-        </button>
-      </ion-col>
-      <ion-col col-2 no-padding text-center>
-        <button ion-button small clear icon-only>
-          <i class="pe-7s-smile"></i>
-        </button>
-      </ion-col>
-      <ion-col col-2 no-padding text-center>
-        <button ion-button small clear icon-only>
-          <i class="pe-7s-user"></i>
-        </button>
-      </ion-col>
-      <ion-col no-padding text-right>
-        <ion-label *ngIf="chatText && chatText.length > textMaxLength" color="danger" class="message-warning">
-          Your message is {{chatText.length}} characters too long.
-        </ion-label>
-      </ion-col>
-    </ion-row>-->
     <ion-row>
       <ion-col col-1 no-padding>
-          <button ion-button clear icon-only item-right (click)="switchEmojiPicker()" color="white">
-              <ion-icon name="md-happy"></ion-icon>
+          <button ion-button clear icon-only item-right (click)="presentActionSheet()" color="white">
+              <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
           </button>
+          <!--<button ion-button clear icon-only item-right (click)="switchEmojiPicker()" color="white">
+              <ion-icon name="md-happy"></ion-icon>
+          </button>-->
       </ion-col>
       <ion-col col-9 no-padding>
         <ion-textarea #chat_input 
@@ -92,9 +80,9 @@
           class="message-input" auto-size autocapitalize="off" block></ion-textarea>
       </ion-col>
       <ion-col no-padding>
-        <button ion-button (click)="sendMessage($event)" [disabled]="!chatText || (chatText && chatText.length > textMaxLength)" color="white" class="button-send" small clear icon-only>
+        <button ion-button (click)="sendMessage($event)" [disabled]="!chatText || (chatText && chatText.length > textMaxLength)" 
+          color="white" class="button-send" small clear icon-only>
           <ion-icon name="md-send"></ion-icon>
-          <!--<i class="pe-7s-paper-plane"></i>-->
         </button>
       </ion-col>
     </ion-row>

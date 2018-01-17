@@ -17,40 +17,45 @@ export class ActionSheetProvider {
    * Generate action sheet for different things.
    */
   presentActionSheet() {
-   let actionSheet = this.actionSheetController.create({
-     buttons: [
-       {
-         text: 'Camera',
-         icon: 'md-camera',
-         handler: () => {
-           console.log('Camera');
-         }
-       },
-       {
-         text: 'Gallery',
-         icon: 'md-image',
-         handler: () => {
-           console.log('Gallery');
-         }
-       },
-       {
-         text: 'Location',
-         icon: 'md-pin',
-         handler: () => {
-           console.log('Location');
-         }
-       },
-       {
-         text: 'Contact',
-         icon: 'md-contact',
-         handler: () => {
-           console.log('Contact');
-         }
-       }
-     ]
-   });
+    return new Promise((resolve, reject) => {
+    let actionSheet = this.actionSheetController.create({
+      buttons: [
+        {
+          text: 'Camera',
+          icon: 'md-camera',
+          handler: () => {
+            console.log('Camera');
+            resolve('Camera');
+          }
+        },
+        {
+          text: 'Gallery',
+          icon: 'md-image',
+          handler: () => {
+            console.log('Gallery');
+            resolve('Gallery');
+          }
+        },
+        {
+          text: 'Location',
+          icon: 'md-pin',
+          handler: () => {
+            console.log('Location');
+            resolve('Location');
+          }
+        },
+        {
+          text: 'Contact',
+          icon: 'md-contact',
+          handler: () => {
+            console.log('Contact');
+            resolve('Contact');
+          }
+        }
+      ]
+    });
 
-   actionSheet.present();
+    actionSheet.present();
+    }); 
  }
-
 }

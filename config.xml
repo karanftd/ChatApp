@@ -102,7 +102,11 @@
     </plugin>
     <plugin name="cordova-plugin-camera" spec="^2.4.1" />
     <allow-navigation href="http://10.103.2.114:8100" />
-    <engine name="android" spec="~6.2.3" />
     <allow-navigation href="http://192.168.56.1:8100" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.1.1">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyC7S1goUqrkk-Zl9E0wdL2XC25hw2dfOqc" />
+        <variable name="API_KEY_FOR_IOS" value="AIzaSyC4mtPdU0HbVT5VnOaEvIIddpaps7mFjXg" />
+    </plugin>
+    <engine name="android" spec="~6.2.3" />
 </widget>
