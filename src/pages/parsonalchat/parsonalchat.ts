@@ -31,7 +31,6 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
   private chatMessages: Array<string>;
   private user: UserModel;
   private channelId: string;
-  private loading: any;
   private favoriteFlag: any;
   private key: number;
   private map: GoogleMap;
@@ -241,10 +240,9 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
   /**
    * Send image as message from camera button.
    */
-  sendPicMsg() {
-    this.loading.present();
-    this.messageimagehandlerProvider.imageMassegeUpload().then((imgurl) => {
-      this.loading.dismiss();
+  sendPicMsg(tag: string) {
+    let loading = this.loadingController.create();
+    this.messageimagehandlerProvider.imageMassegeUpload(tag).then((imgurl) => {
       this.chatProvider.sendPersonalMessage((this.user as any).$key, imgurl.toString(), this.channelId)
         .then(() => {
           this.chatText = '';
@@ -254,7 +252,6 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
         })
     }).catch((err) => {
       alert(err);
-      this.loading.dismiss();
     })
   }
 
@@ -303,9 +300,9 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     this.actionSheetProvider.presentActionSheet().then((res) => {
       this.loghandlingProvider.showLog(this.TAG, 'res : ' + res);
       if (res == 'Camera'){
-
+        this.sendPicMsg('Camera');
       }else if(res == 'Gallery'){
-
+        this.sendPicMsg('Gallery');
       }else if(res == 'Location'){
         this.loghandlingProvider.showLog(this.TAG, 'from condition');
         let mapMessage: string;

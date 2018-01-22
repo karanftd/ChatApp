@@ -209,7 +209,7 @@ export class OneTwoOnePage {
    */
   sendPicMsg() {
     this.loading.present();
-    this.messageimagehandlerProvider.imageMassegeUpload().then((imgurl) => {
+    this.messageimagehandlerProvider.imageMassegeUpload("Gallery").then((imgurl) => {
       this.loading.dismiss();
       this.chatProvider.sendOneTwoOneMessage((this.user as any).$key, imgurl.toString() , this.channelId)
       .then(() => {

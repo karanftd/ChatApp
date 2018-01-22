@@ -21,13 +21,6 @@ export class MessageimagehandlerProvider {
   constructor(
     private camera: Camera,
     private loghandlingProvider: LoghandlingProvider) {
-      this.options = {
-        quality: 100,
-        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-        destinationType: this.camera.DestinationType.NATIVE_URI,
-        encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE
-      }
   }
 
   /**
@@ -66,9 +59,27 @@ export class MessageimagehandlerProvider {
   /**
    * Method upload message image to firebase and return image url.
    */
-  imageMassegeUpload() {
+  imageMassegeUpload(tag: string) {
     var promise = new Promise((resolve, reject) => {
+      if(tag == "Camera"){
+        this.options = {
+          quality: 100,
+          sourceType: this.camera.PictureSourceType.CAMERA,
+          destinationType: this.camera.DestinationType.NATIVE_URI,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        }
+      }else if(tag == "Gallery"){
+        this.options = {
+          quality: 100,
+          sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+          destinationType: this.camera.DestinationType.NATIVE_URI,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        }
+      }
       this.camera.getPicture(this.options).then((imageData) => {
+        this.loghandlingProvider.showLog(this.TAG, 'get picture');
         this.nativepath = imageData;
         this.loghandlingProvider.showLog(this.TAG, imageData);
         (<any>window).resolveLocalFileSystemURL(this.nativepath, (res) => {
