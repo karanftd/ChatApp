@@ -140,7 +140,7 @@ export class TabChatsPage {
             this.channelId = userId + "-" + this.user.uid ;
           }
           this.loghandlingProvider.showLog(this.TAG,'Channel ID : ' + this.channelId);
-          this.app.getRootNav().push('ParsonalchatPage', {user: this.user, channelId: this.channelId});
+          this.app.getRootNav().push('ParsonalchatPage', {user: this.user, channelId: this.channelId, userId: userId});
           ConstantProvider.setAlreadySubscribed(true);
         }
       }else{

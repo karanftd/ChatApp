@@ -108,5 +108,16 @@
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyC7S1goUqrkk-Zl9E0wdL2XC25hw2dfOqc" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyC4mtPdU0HbVT5VnOaEvIIddpaps7mFjXg" />
     </plugin>
+    <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
+    <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0">
+        <variable name="XWALK_VERSION" value="23+" />
+        <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
+        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
+        <variable name="XWALK_MODE" value="embedded" />
+        <variable name="XWALK_MULTIPLEAPK" value="true" />
+    </plugin>
+    <plugin name="cordova-plugin-iosrtc" spec="^4.0.2" />
+    <plugin name="cordova-plugin-media" spec="^3.0.1" />
+    <plugin name="cordova-plugin-nativeaudio" spec="^3.0.9" />
     <engine name="android" spec="~6.2.3" />
 </widget>

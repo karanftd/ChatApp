@@ -171,11 +171,11 @@ export class AuthenticationProvider {
       this.angularFireAuth.auth.createUserWithEmailAndPassword(newuser.email, newuser.password).then((res) => {
         this.angularFireAuth.auth.currentUser.updateProfile({displayName: newuser.displayName, photoURL: newuser.photoUrl});
         this.loghandlingProvider.showLog(this.TAG,'User created.')
-          this.angularFireAuth.auth.signInWithEmailAndPassword(newuser.email, newuser.password).then((res: any) => {
-              resolve(res);
-            }).catch((err) => {
-              reject(err);
-          })
+        this.angularFireAuth.auth.signInWithEmailAndPassword(newuser.email, newuser.password).then((res: any) => {
+            resolve(res);
+          }).catch((err) => {
+            reject(err);
+        })
       }).catch((err) => {
         reject(err);
       })
@@ -188,10 +188,10 @@ export class AuthenticationProvider {
    */
   getuserdetails() {
     var promise = new Promise((resolve, reject) => {
-    this.firedata.child(firebase.auth().currentUser.uid).once('value', (snapshot) => {
-      resolve(snapshot.val());
-    }).catch((err) => {
-      reject(err);
+      this.firedata.child(firebase.auth().currentUser.uid).once('value', (snapshot) => {
+        resolve(snapshot.val());
+      }).catch((err) => {
+        reject(err);
       })
     })
     return promise;
@@ -260,7 +260,6 @@ export class AuthenticationProvider {
       }
     });
   }
-
 }
 
 export class UserModel {

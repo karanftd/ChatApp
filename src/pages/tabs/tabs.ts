@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { VideocallProvider } from '../../providers/videocall/videocall'
+
 /**
  * Generated class for the TabsPage page.
  *
@@ -18,7 +20,11 @@ export class TabsPage {
   tabContactsRoot = 'TabContactsPage'
   tabProfileRoot = 'TabProfilePage'
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(
+    private navCtrl: NavController, 
+    private navParams: NavParams,
+    private videocallProvider: VideocallProvider) {
+      this.videocallProvider.InitializeApiRTC();
+}
 
 }

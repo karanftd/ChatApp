@@ -14,6 +14,7 @@ export class OnlineHandlingProvider {
 
   firedata = firebase.database().ref(tableNames.OnlineUser);
   private fireMessageData = firebase.database().ref(tableNames.PersonalMessage);
+  private fireUserData = firebase.database().ref(tableNames.User);
   private TAG: string = "OnlineHandlingProvider";
 
   constructor(private angularFireDatabase: AngularFireDatabase, private loghandlingProvider: LoghandlingProvider) {
@@ -92,4 +93,33 @@ export class OnlineHandlingProvider {
     })
     return promise;
   }
-}
+
+  updateApiRTCId(apiRTCId){
+    this.loghandlingProvider.showLog(this.TAG, "Updating api rtc id to : " + apiRTCId);
+    return this.angularFireDatabase.list(`${tableNames.User}`)
+    .update(firebase.auth().currentUser.uid, {
+      apiRTCId: apiRTCId,
+    });
+  }
+
+  fatchApiRTCId(uid){
+    this.loghandlingProvider.showLog(this.TAG, "Fatching api rtc id for : " + uid);
+
+    /*var promise = new Promise((resolve, reject) => {
+      this.fireUserData.child(uid).once('value', (snapshot) => {
+        resolve(snapshot.val());
+      }).catch((err) => {
+        reject(err);
+      })
+    })
+    return promise;*/
+
+    /*return this.angularFireDatabase.list(`${tableNames.User}/${uid}/${"apiRTCId"}`)
+      .map(apiRTCId => apiRTCId.map((item) => {
+        return item;
+      }));*/
+
+      return this.angularFireDatabase.object(tableNames.User + '/' + uid + '/' + 'apiRTCId');
+    }
+
+  }

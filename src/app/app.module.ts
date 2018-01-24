@@ -9,6 +9,7 @@ import { HttpModule } from '@angular/http';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Camera } from '@ionic-native/camera';
 import { GoogleMaps } from '@ionic-native/google-maps';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
@@ -32,6 +33,7 @@ import { MessageimagehandlerProvider } from '../providers/messageimagehandler/me
 import { OnlineHandlingProvider } from '../providers/online-handling/online-handling';
 import { Push } from "@ionic-native/push";
 import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
+import { VideocallProvider } from '../providers/videocall/videocall';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
     Camera,
     Push,
     GoogleMaps,
+    NativeAudio,
     ApihandlingProvider,
     AngularFireAuth,
     LocalstorageProvider,
@@ -73,6 +76,7 @@ import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
     MessageimagehandlerProvider,
     OnlineHandlingProvider,
     ActionSheetProvider,
+    VideocallProvider,
   ]
 })
 export class AppModule {}

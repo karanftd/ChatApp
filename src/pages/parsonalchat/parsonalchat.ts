@@ -3,6 +3,8 @@ import { IonicPage, NavParams, Platform, TextInput, Content, LoadingController, 
 import { Keyboard } from '@ionic-native/keyboard';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker } 
 from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation';
+
 import { ChathandlingProvider } from '../../providers/chathandling/chathandling';
 import { UserModel } from '../../providers/authentication/authentication';
 import { LoghandlingProvider } from '../../providers/loghandling/loghandling';
@@ -11,7 +13,7 @@ import { MessageimagehandlerProvider } from '../../providers/messageimagehandler
 import { OnlineHandlingProvider } from '../../providers/online-handling/online-handling';
 import { AlerthandlingProvider } from '../../providers/alerthandling/alerthandling';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { Geolocation } from '@ionic-native/geolocation';
+import { VideocallProvider } from '../../providers/videocall/videocall';
 
 /**
  * Generated class for the ParsonalchatPage page.
@@ -35,6 +37,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
   private key: number;
   private map: GoogleMap;
   private elementMap: HTMLElement;
+  private calleeId: string;
 
   showEmojiPicker = false;
   @ViewChild('chat_input') messageInput: TextInput;
@@ -66,10 +69,23 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     private navController: NavController,
     private actionSheetProvider: ActionSheetProvider,
     private geolocation: Geolocation,
-    private googleMaps: GoogleMaps) {
+    private googleMaps: GoogleMaps,
+    private videocallProvider: VideocallProvider) {
     this.user = this.navParams.get('user');
     this.channelId = this.navParams.get('channelId');
 
+    let userId = this.navParams.get('userId');
+
+    this.onlineHandlingProvider.fatchApiRTCId(userId).forEach(element => {
+      let user: any = JSON.stringify(element);
+      this.loghandlingProvider.showLog(this.TAG, "user : " + user);
+      for(let key in element){
+        this.calleeId = element[key];
+      }
+    });
+
+    this.loghandlingProvider.showLog(this.TAG, "calleeId : " + this.calleeId);
+    
     this.checkFavorited().then((res: any) => {
       this.loghandlingProvider.showLog(this.TAG, "favorite flag : " + res);
       this.favoriteFlag = res;
@@ -390,5 +406,19 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
 
       });
   }*/
+
+  makeVideoCall(){
+    if(this.calleeId){
+      this.videocallProvider.MakeCall(this.calleeId)
+      this.navController.setRoot("IncomingCallPage");
+    }else{
+      alert("Not able to fatch callee Id.");
+    }
+    
+  }
+
+  hangUp(){
+    this.videocallProvider.HangUp();
+  }
 
 }

@@ -7,6 +7,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoghandlingProvider } from '../providers/loghandling/loghandling';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { LocalstorageProvider } from '../providers/localstorage/localstorage';
+import { OnlineHandlingProvider } from '../providers/online-handling/online-handling';
+import { VideocallProvider } from '../providers/videocall/videocall';
 
 declare let cordova: any;
 
@@ -33,13 +35,23 @@ export class MyApp {
   constructor(private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, 
   private loghandlingProvider: LoghandlingProvider, private authenticationProvider: AuthenticationProvider,
   private loadingController: LoadingController, private localstorageProvider: LocalstorageProvider,
-  private events: Events, /**private push:Push**/) {
+  private events: Events, /**private push:Push,**/
+  private onlineHandlingProvider : OnlineHandlingProvider,
+  private videocallProvider: VideocallProvider) {
     
     this.initializeApp();
     //this.registerPush();
-
+    
     this.events.subscribe('user:displayName updated', (nickname) => {
       this.username = nickname;
+    });
+
+    this.events.subscribe('apiCCId generated', (myCallId) => {
+      this.onlineHandlingProvider.updateApiRTCId(myCallId);
+    });
+
+    this.events.subscribe('Incoming call.', (incomingCallId) => {
+      this.nav.push('IncomingCallPage', {incomingCallId : incomingCallId});
     });
     
     this.pages = [
