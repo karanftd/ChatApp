@@ -417,8 +417,4 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     
   }
 
-  hangUp(){
-    this.videocallProvider.HangUp();
-  }
-
 }

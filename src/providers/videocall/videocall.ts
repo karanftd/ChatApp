@@ -12,14 +12,6 @@ declare var apiRTC: any;
 @Injectable()
 export class VideocallProvider {
 
-  showCall: boolean;
-  showHangup: boolean;
-  showAnswer: boolean;
-  showReject: boolean;
-  showStatus: boolean;
-  showRemoteVideo: boolean = true;
-  showMyVideo: boolean = true;
-
   session;
   webRTCClient;
   incomingCallId = 0;
@@ -68,17 +60,19 @@ export class VideocallProvider {
   }
 
   InitializeControls() {
-    this.showCall = true;
-    this.showAnswer = false;
-    this.showHangup = false;
-    this.showReject = false;
+    console.log("InitializeControls");
+    this.events.publish('showCall', true);
+    this.events.publish('showAnswer', false);
+    this.events.publish('showHangup', false);
+    this.events.publish('showReject', false);
   }
 
   InitializeControlsForIncomingCall() {
-    this.showCall = false;
-    this.showAnswer = true;
-    this.showReject = true;
-    this.showHangup = true;
+    console.log("InitializeControlsForIncomingCall");
+    this.events.publish('showCall', false);
+    this.events.publish('showAnswer', true);
+    this.events.publish('showReject', true);
+    this.events.publish('showHangup', true);
     this.nativeAudio.loop('uniqueI1').then((succ)=>{
       console.log("succ",succ)
     }, (err)=>{
@@ -88,24 +82,27 @@ export class VideocallProvider {
   }
 
   InitializeControlsForHangup() {
-    this.showCall = true;
-    this.showAnswer = false;
-    this.showReject = false;
-    this.showHangup = false;
+    console.log("InitializeControlsForHangup");
+    this.events.publish('showCall', true);
+    this.events.publish('showAnswer', false);
+    this.events.publish('showReject', false);
+    this.events.publish('showHangup', false);
   }
 
   UpdateControlsOnAnswer() {
-    this.showAnswer = false;
-    this.showReject = false;
-    this.showHangup = true;
-    this.showCall = false;
+    console.log("UpdateControlsOnAnswer");
+    this.events.publish('showAnswer', false);
+    this.events.publish('showReject', false);
+    this.events.publish('showHangup', true);
+    this.events.publish('showCall', false);
   }
 
   UpdateControlsOnReject() {
-    this.showAnswer = false;
-    this.showReject = false;
-    this.showHangup = false;
-    this.showCall = true;
+    console.log("UpdateControlsOnReject");
+    this.events.publish('showAnswer', false);
+    this.events.publish('showReject', false);
+    this.events.publish('showHangup', false);
+    this.events.publish('showCall', true);
   }
 
   RemoveMediaElements(callId) {
@@ -137,8 +134,8 @@ export class VideocallProvider {
 
   AddEventListeners() {
     apiRTC.addEventListener("userMediaSuccess", (e) => {
-      this.showStatus = true;
-      this.showMyVideo = true;
+      this.events.publish('showStatus', true);
+      this.events.publish('showMyVideo', true);
 
       this.webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId, {
         width: "128px",
@@ -154,9 +151,9 @@ export class VideocallProvider {
     });
 
     apiRTC.addEventListener("incomingCall", (e) => {
-      this.InitializeControlsForIncomingCall();
       this.incomingCallId = e.detail.callId;
       this.events.publish('Incoming call.', this.incomingCallId);
+      this.InitializeControlsForIncomingCall();
     });
 
     apiRTC.addEventListener("hangup", (e) => {
@@ -165,6 +162,7 @@ export class VideocallProvider {
       }
       this.status = this.status + "<br/> The call has been hunged up due to the following reasons <br/> " + e.detail.reason;
       this.RemoveMediaElements(e.detail.callId);
+      this.events.publish('hangup');
     });
 
     apiRTC.addEventListener("remoteStreamAdded", (e) => {
@@ -179,11 +177,6 @@ export class VideocallProvider {
       this.webRTCClient.setAllowMultipleCalls(true);
       this.webRTCClient.setVideoBandwidth(300);
       this.webRTCClient.setUserAcceptOnIncomingCall(true);
-
-      /*      this.InitializeControls();
-            this.AddEventListeners();*/
-
-      //this.MakeCall("729278");
     });
 
   }
@@ -192,7 +185,7 @@ export class VideocallProvider {
     var callId = this.webRTCClient.call(calleeId);
     if (callId != null) {
       this.incomingCallId = callId;
-      this.showHangup = true;
+      this.events.publish('showHangup', true);
     }
   }
 

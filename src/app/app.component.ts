@@ -51,7 +51,7 @@ export class MyApp {
     });
 
     this.events.subscribe('Incoming call.', (incomingCallId) => {
-      this.nav.push('IncomingCallPage', {incomingCallId : incomingCallId});
+      this.nav.push('IncomingCallPage', {status : "incoming" , incomingCallId : incomingCallId});
     });
     
     this.pages = [

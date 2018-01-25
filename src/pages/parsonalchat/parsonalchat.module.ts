@@ -18,7 +18,7 @@ import { Geolocation } from '@ionic-native/geolocation';
   ],
   providers:[
     EmojiProvider,
-    Geolocation
+    Geolocation,
   ]
 })
 export class ParsonalchatPageModule {}

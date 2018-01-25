@@ -5,13 +5,22 @@ page-incoming-call {
     }
 
     .call-button{
-        margin-top: 90%;
+        margin-top: 10%;
         margin-right: 10%;
         margin-left: 10%;
     }
     .fab {
         width: 80px !important;
         height: 80px !important;
+
+        &.left {
+            float: left !important;
+            margin-left: 46px;
+        }
+        &.right {
+            margin-right: 54px;
+            float: right !important;
+        }
     }
 
 }

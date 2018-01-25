@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { VideocallProvider } from '../../providers/videocall/videocall'
+import { VideocallProvider } from '../../providers/videocall/videocall';
 
 /**
  * Generated class for the TabsPage page.
