@@ -131,7 +131,14 @@ export class TabChatsPage {
           this.loading.dismiss();
           this.onlineStatus = false;
           let userId: any;
-          userId = this.uids[0];
+
+          uid.forEach(element => {
+            for(let key in element){
+              this.loghandlingProvider.showLog(this.TAG,"key: " + key);
+              userId = element[key];
+            }
+          });
+
           this.loghandlingProvider.showLog(this.TAG,"uid added." + userId);
           if(this.user.uid > userId)
           {

@@ -48,10 +48,13 @@ export class OnlineHandlingProvider {
    * @param channelId channel id for one two one messages.
    */
   checkActiveChatWith(userId: string) {
-    return this.angularFireDatabase.list(`${tableNames.User}/${userId}/${"meta"}/${"message"}`)
-      .map(uids => uids.map((item) => {
-        return item;
-      }));
+    
+    return this.angularFireDatabase.list(`${tableNames.User}/${userId}/${"meta"}/${"message"}/${"active_chat_with"}`);
+
+    /*return this.angularFireDatabase.object(tableNames.User + '/' + userId + '/' + 'meta' + '/' + 'message' + '/' + 'active_chat_with')
+    .map(uids => uids.map((item) => {
+      return item;
+    }));*/
   }
 
   updateUserStatus(userId: string) {
