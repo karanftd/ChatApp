@@ -8,7 +8,6 @@ import { LoghandlingProvider } from '../providers/loghandling/loghandling';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { LocalstorageProvider } from '../providers/localstorage/localstorage';
 import { OnlineHandlingProvider } from '../providers/online-handling/online-handling';
-import { VideocallProvider } from '../providers/videocall/videocall';
 
 declare let cordova: any;
 
@@ -36,8 +35,7 @@ export class MyApp {
   private loghandlingProvider: LoghandlingProvider, private authenticationProvider: AuthenticationProvider,
   private loadingController: LoadingController, private localstorageProvider: LocalstorageProvider,
   private events: Events, /**private push:Push,**/
-  private onlineHandlingProvider : OnlineHandlingProvider,
-  private videocallProvider: VideocallProvider) {
+  private onlineHandlingProvider : OnlineHandlingProvider,) {
     
     this.initializeApp();
     //this.registerPush();

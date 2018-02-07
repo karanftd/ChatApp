@@ -14,7 +14,7 @@ export class OnlineHandlingProvider {
 
   firedata = firebase.database().ref(tableNames.OnlineUser);
   private fireMessageData = firebase.database().ref(tableNames.PersonalMessage);
-  private fireUserData = firebase.database().ref(tableNames.User);
+  //private fireUserData = firebase.database().ref(tableNames.User);
   private TAG: string = "OnlineHandlingProvider";
 
   constructor(private angularFireDatabase: AngularFireDatabase, private loghandlingProvider: LoghandlingProvider) {

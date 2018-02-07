@@ -8,6 +8,11 @@ page-parsonalchat {
 				border-top: 0.55px solid #c8c7cc !important;
 				margin-top: 24px !important;
 			}
+
+			ion-item{
+				width: 100% !important;
+				height: 20%;
+			}
 		}
 		
 
@@ -23,7 +28,7 @@ page-parsonalchat {
 		}
 
 		.mapcanvas{
-			width: 150px !important;
+			width: 100% !important;
         	height: 150px !important;
 		}
 

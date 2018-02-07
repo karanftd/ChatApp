@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Component } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
 

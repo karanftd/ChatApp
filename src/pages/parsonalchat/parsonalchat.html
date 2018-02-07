@@ -36,6 +36,8 @@
             <img class="message-img right" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" 
             src="{{message.message}}">
             <span class="message-time">{{message.timestamp | date:"hh:mm a"}}</span>
+            <span *ngIf="message.message.substring(0,10) == '{latitude:'" 
+            class="message-text right">{{message.message}}</span>
           </p>
           <p *ngIf="message.from != user.uid">
             <ion-avatar>
@@ -46,12 +48,13 @@
             <img class="message-img left" width="200" height="200" *ngIf="message.message.substring(0, 4) == 'http'" 
             src="{{message.message}}">
             <span class="message-time">{{message.timestamp | date:"hh:mm a"}}</span>
+            <span *ngIf="message.message.substring(0,10) == '{latitude:'" 
+            class="message-text left">{{message.message}}</span>
           </p>
         </ion-label>
         {{message.message}}
-        <ion-card *ngIf="message.message.substring(0,12) == '{latitude:'">
-          {{getName()}}<div #mapcanvas class="mapcanvas" id="mapcanvas"></div>
-        </ion-card>
+        <h1 *ngIf="message.message.substring(0,10) == '{latitude:'">MAP</h1>
+        <div #mapcanvas class="mapcanvas" id="mapcanvas" *ngIf="message.message.substring(0,10) == '{latitude:'"></div>
       </ion-item>
     </div>
   </ion-list>
