@@ -407,7 +407,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
       });
   }*/
 
-  makeVideoCall(){
+  /*makeVideoCall(){
     if(this.calleeId){
       this.videocallProvider.MakeCall(this.calleeId)
       this.navController.setRoot("IncomingCallPage");
@@ -415,6 +415,6 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
       alert("Not able to fatch callee Id.");
     }
     
-  }
+  }*/
 
 }
