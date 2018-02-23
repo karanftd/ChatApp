@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-plugin-sinch-calling"
+    version="1.0.0">
+    <name>Sinch Calling</name>
+    <description>Provides Audio and video calling features using sinch SDK.</description>
+    <license>MIT</license>
+    <keywords></keywords>
+    <repo>https://github.com/parita-detroja/cordova-plugin-sinch-calling.git</repo>
+    <issue>https://github.com/parita-detroja/cordova-plugin-sinch-calling/issues</issue>
+
+    <js-module src="www/sinchCalling.js" name="sinchCalling">
+            <!--<runs/>-->
+        <clobbers target="sinchCalling" />
+    </js-module>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+
+    <!-- android -->
+    <platform name="android">
+      <js-module src="www/sinchCalling.js" name="sinchCalling">
+        <runs/>
+
+        <!-- This is the window variable name you want, like window.MyCordovaPlugin -->
+        <clobbers target="sinchCalling" />
+      </js-module>
+      <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="SinchCalling">
+          <param name="android-package" value="com.sinchcalling.SinchCalling" />
+          <param name="onload" value="true" />
+        </feature>
+      </config-file>
+
+      <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.RECORD_AUDIO" />
+        <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+      </config-file>
+
+      <source-file src="src/android/com/sinchcalling/SinchCalling.java" target-dir="src/com/sinchcalling/" />
+      <source-file src="src/android/com/sinchcalling/SinchAudioCall.java" target-dir="src/com/sinchcalling/" />
+      <source-file src="src/android/com/sinchcalling/Constant.java" target-dir="src/com/sinchcalling/" />
+      <source-file src="src/android/com/sinchcalling/ConfigureSinch.java" target-dir="src/com/sinchcalling/" />
+
+      <framework src="src/android/com/sinchcalling/sinchCalling.gradle" custom="true" type="gradleReference" />
+
+      <resource-file src="src/android/com/sinchcalling/sinch-android-rtc-3.12.2.aar" target="libs/sinch-android-rtc-3.12.2.aar" />
+
+    </platform>
+
+</plugin>
