@@ -5,10 +5,15 @@
         </button>
         <ion-title>Messages</ion-title>
         <ion-buttons end>
+          <button ion-button (click)="makeAudioCall()">
+            <ion-icon ios="ios-call" md="md-call"></ion-icon>
+          </button>
+        </ion-buttons>
+        <!--<ion-buttons end>
           <button ion-button (click)="makeVideoCall()">
             <ion-icon ios="ios-videocam" md="md-videocam"></ion-icon>
           </button>
-        </ion-buttons>
+        </ion-buttons>-->
         <ion-buttons end *ngIf="favoriteFlag != true">
           <button ion-button (click)="addToFavorite()">
           <ion-icon name="star"></ion-icon>

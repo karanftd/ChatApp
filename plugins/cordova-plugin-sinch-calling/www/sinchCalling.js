@@ -5,7 +5,7 @@ var PLUGIN_NAME = 'SinchCalling';
 
 var sinchCalling = {
 
-	initSinch: function(success, failure, config) {
+	initSinch: function(config, success, failure) {
         exec(success || emptyFnc,
             failure || emptyFnc,
             PLUGIN_NAME,

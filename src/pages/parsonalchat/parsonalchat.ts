@@ -13,7 +13,8 @@ import { MessageimagehandlerProvider } from '../../providers/messageimagehandler
 import { OnlineHandlingProvider } from '../../providers/online-handling/online-handling';
 import { AlerthandlingProvider } from '../../providers/alerthandling/alerthandling';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { VideocallProvider } from '../../providers/videocall/videocall';
+//import { VideocallProvider } from '../../providers/videocall/videocall';
+import { SinchCallingProvider } from '../../providers/sinch-calling/sinch-calling';
 
 /**
  * Generated class for the ParsonalchatPage page.
@@ -38,6 +39,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
   private map: GoogleMap;
   private elementMap: HTMLElement;
   private calleeId: string;
+  private userId: string;
 
   showEmojiPicker = false;
   @ViewChild('chat_input') messageInput: TextInput;
@@ -70,21 +72,22 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     private actionSheetProvider: ActionSheetProvider,
     private geolocation: Geolocation,
     private googleMaps: GoogleMaps,
-    private videocallProvider: VideocallProvider) {
+    //private videocallProvider: VideocallProvider,
+    private sinchCallingProvider: SinchCallingProvider,) {
     this.user = this.navParams.get('user');
     this.channelId = this.navParams.get('channelId');
 
-    let userId = this.navParams.get('userId');
+    this.userId = this.navParams.get('userId');
 
-    this.onlineHandlingProvider.fatchApiRTCId(userId).forEach(element => {
+    /*this.onlineHandlingProvider.fatchApiRTCId(userId).forEach(element => {
       let user: any = JSON.stringify(element);
       this.loghandlingProvider.showLog(this.TAG, "user : " + user);
       for(let key in element){
         this.calleeId = element[key];
       }
-    });
+    });*/
 
-    this.loghandlingProvider.showLog(this.TAG, "calleeId : " + this.calleeId);
+    //this.loghandlingProvider.showLog(this.TAG, "calleeId : " + this.calleeId);
     
     this.checkFavorited().then((res: any) => {
       this.loghandlingProvider.showLog(this.TAG, "favorite flag : " + res);
@@ -94,8 +97,13 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
       alert(err);
     });
 
-
     this.loadData();
+
+    this.sinchCallingProvider.initSinch().then((res: any) => {
+      this.loghandlingProvider.showLog(this.TAG, "sinch responce : " + res);
+    }).catch((err) => {
+      this.loghandlingProvider.showLog(this.TAG, "sinch error : " + err);
+    });
   }
 
   /**
@@ -416,5 +424,9 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     }
     
   }*/
+
+  makeAudioCall(){
+    this.sinchCallingProvider.createAudioCall();
+  }
 
 }

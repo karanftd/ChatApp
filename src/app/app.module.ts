@@ -10,6 +10,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { Camera } from '@ionic-native/camera';
 import { GoogleMaps } from '@ionic-native/google-maps';
 //import { NativeAudio } from '@ionic-native/native-audio';
+import { SinchCalling } from 'sinch-call';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
@@ -33,6 +34,7 @@ import { MessageimagehandlerProvider } from '../providers/messageimagehandler/me
 import { OnlineHandlingProvider } from '../providers/online-handling/online-handling';
 import { Push } from "@ionic-native/push";
 import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
+import { SinchCallingProvider } from '../providers/sinch-calling/sinch-calling';
 //import { VideocallProvider } from '../providers/videocall/videocall';
 
 @NgModule({
@@ -67,6 +69,7 @@ import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
     Push,
     GoogleMaps,
     //NativeAudio,
+    SinchCalling,
     ApihandlingProvider,
     AngularFireAuth,
     LocalstorageProvider,
@@ -76,6 +79,7 @@ import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
     MessageimagehandlerProvider,
     OnlineHandlingProvider,
     ActionSheetProvider,
+    SinchCallingProvider,
     //VideocallProvider,
   ]
 })

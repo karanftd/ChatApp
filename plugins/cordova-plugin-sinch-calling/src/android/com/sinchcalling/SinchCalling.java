@@ -20,6 +20,9 @@ import android.util.Log;
 
 import java.util.Date;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+
 public class SinchCalling extends CordovaPlugin 
 {
   
@@ -31,6 +34,14 @@ public class SinchCalling extends CordovaPlugin
 
   private SinchAudioCall sinchAudioCall;
 
+  private static CallbackContext callbackContext;
+
+  private ExecutorService executorService;
+
+  private JSONObject status = new JSONObject();
+
+  private PluginResult result = null;
+
   public void initialize(CordovaInterface cordova, CordovaWebView webView) 
   {
     super.initialize(cordova, webView);
@@ -38,63 +49,86 @@ public class SinchCalling extends CordovaPlugin
     Log.d(TAG, "Initializing SinchCalling");
   }
 
-  public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException 
+   @Override
+  protected void pluginInitialize() 
+  {
+    super.pluginInitialize();
+
+    Log.d(TAG, "pluginInitialize Sinch Calling");
+
+    executorService =  Executors.newSingleThreadExecutor();
+  }
+
+  public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException 
   {
 
     final Activity activity = this.cordova.getActivity();
 
     if(action.equals(INIT_SINCH)) 
     {
-      
-      JSONObject status = new JSONObject();
 
-      PluginResult result;
-
-      try {
-
-        Log.d(TAG, "from initSinch");
-
-        status = ConfigureSinch.initiateSinchClient(activity.getApplicationContext(), args.getJSONObject(0));
-
-        ConfigureSinch.setSupportCalling(true);
-
-        status.put("set support calling","succeessfull");
-
-        ConfigureSinch.startListeningOnActiveConnection();
-
-        status.put("start listening on active connection","succeessfull");
-
-        ConfigureSinch.startSinchClient();
-
-        status.put("start sinch client","succeessfull");
-
-        sinchAudioCall = new SinchAudioCall();
-
-        status.put("sinch audio call","succeessfull");
-
-        sinchAudioCall.addCallClientListener();
-
-        status.put("add call client listener","succeessfull");
-
-        if(status.getBoolean("status"))
+      this.callbackContext = callbackContext;
+      executorService.execute(new Runnable() 
+      {
+        public void run() 
         {
-          result = new PluginResult(PluginResult.Status.OK, status);
-        }else 
-        {
-          result = new PluginResult(PluginResult.Status.ERROR, status);
+
+          Log.d(TAG, "from initSinch");
+          
+          Log.e(TAG, args.toString());
+
+            activity.runOnUiThread(new Runnable() 
+            {
+
+              @Override
+              public void run() 
+              {
+                try{
+
+                  Log.e(TAG, args.getJSONObject(0).toString());
+                  
+                  status = ConfigureSinch.initiateSinchClient(activity.getApplicationContext(), args.getJSONObject(0));
+
+                  ConfigureSinch.setSupportCalling(true);
+
+                  status.put("set support calling","succeessfull");
+
+                  ConfigureSinch.startListeningOnActiveConnection();
+
+                  status.put("start listening on active connection","succeessfull");
+
+                  ConfigureSinch.startSinchClient();
+
+                  status.put("start sinch client","succeessfull");
+
+                  sinchAudioCall = new SinchAudioCall();
+
+                  status.put("sinch audio call","succeessfull");
+
+                  sinchAudioCall.addCallClientListener();
+
+                  status.put("add call client listener","succeessfull");
+
+                  if(status.getBoolean("status"))
+                  {
+                    result = new PluginResult(PluginResult.Status.OK, status);
+                  }else 
+                  {
+                    result = new PluginResult(PluginResult.Status.ERROR, status);
+                  }
+
+                  result.setKeepCallback(true);
+                  callbackContext.sendPluginResult(result);
+                } catch (JSONException e) {
+                  e.printStackTrace();
+                }
+              }
+            });  
         }
-
-      } catch (JSONException e) {
-        e.printStackTrace();
-        result = new PluginResult(PluginResult.Status.ERROR, status);
-      }
-
-      result.setKeepCallback(true);
-      callbackContext.sendPluginResult(result);
+      });
 
     } else if(action.equals(CONNECT_AUDIO_CALL)) 
     {
-      
       sinchAudioCall.createAudioCall("remote");
 
     } else if(action.equals(HANGUP_AUDIO_CALL))
