@@ -36,6 +36,8 @@ public class SinchCalling extends CordovaPlugin
 
   private static CallbackContext callbackContext;
 
+  private static CallbackContext audioCallCallbackContext;
+
   private ExecutorService executorService;
 
   private JSONObject status = new JSONObject();
@@ -129,8 +131,27 @@ public class SinchCalling extends CordovaPlugin
 
     } else if(action.equals(CONNECT_AUDIO_CALL)) 
     {
-      sinchAudioCall.createAudioCall("remote");
 
+      audioCallCallbackContext = callbackContext;
+      Log.d(TAG, "from connectAudioCall");
+      Log.e(TAG, args.toString());
+
+      activity.runOnUiThread(new Runnable() 
+      {
+
+        @Override
+        public void run() 
+        {
+          try{
+            
+            sinchAudioCall.createAudioCall(args.getString(0),
+            audioCallCallbackContext);
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
     } else if(action.equals(HANGUP_AUDIO_CALL))
     {
       sinchAudioCall.hangUpAudioCall();

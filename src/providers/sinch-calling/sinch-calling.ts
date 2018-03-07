@@ -48,8 +48,18 @@ export class SinchCallingProvider {
     };
   }
 
-  createAudioCall(){
-
+  createAudioCall(remoteUserId: string){
+    this.loghandlingProvider.showLog(this.TAG, "createAudioCall");
+    this.loghandlingProvider.showLog(this.TAG, "remote user id : " + JSON.stringify(remoteUserId));
+    return new Promise( (resolve, reject) => {
+      this.sinchCalling.connectAudioCall(remoteUserId).then((res) => {
+        this.loghandlingProvider.showLog(this.TAG, "createAudioCall responce : " + res);
+        resolve(res);
+      }, (err) => {
+        this.loghandlingProvider.showLog(this.TAG, "createAudioCall error : " + err);
+        reject(err);
+      });
+    });
   }
 
 }

@@ -426,7 +426,11 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
   }*/
 
   makeAudioCall(){
-    this.sinchCallingProvider.createAudioCall();
+    this.sinchCallingProvider.createAudioCall(this.userId).then((res: any) => {
+      this.loghandlingProvider.showLog(this.TAG, "createAudioCall responce : " + res);
+    }).catch((err) => {
+      this.loghandlingProvider.showLog(this.TAG, "createAudioCall error : " + err);
+    });
   }
 
 }
