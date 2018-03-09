@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { IonicPage, NavParams, Platform, TextInput, Content, LoadingController, NavController } from 'ionic-angular';
+import { IonicPage, NavParams, Platform, TextInput, Content, LoadingController, NavController, 
+  Events } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker } 
 from '@ionic-native/google-maps';
@@ -73,7 +74,8 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     private geolocation: Geolocation,
     private googleMaps: GoogleMaps,
     //private videocallProvider: VideocallProvider,
-    private sinchCallingProvider: SinchCallingProvider,) {
+    private sinchCallingProvider: SinchCallingProvider,
+    private events: Events) {
     this.user = this.navParams.get('user');
     this.channelId = this.navParams.get('channelId');
 
@@ -100,9 +102,14 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     this.loadData();
 
     this.sinchCallingProvider.initSinch().then((res: any) => {
-      this.loghandlingProvider.showLog(this.TAG, "sinch responce : " + res);
+      this.loghandlingProvider.showLog(this.TAG, "sinch responce : " + JSON.stringify(res));
     }).catch((err) => {
-      this.loghandlingProvider.showLog(this.TAG, "sinch error : " + err);
+      this.loghandlingProvider.showLog(this.TAG, "sinch error : " + JSON.stringify(err));
+    });
+
+    this.events.subscribe('onIncomingCall', () => {
+      this.loghandlingProvider.showLog(this.TAG, "subscribe onIncomingCall");
+      this.navController.push('SinchAudioCallPage', {'call_type': 'onIncomingCall'});
     });
   }
 
@@ -293,7 +300,8 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
    * On swipe delete chat.
    */
   deleteChatHandling() {
-    this.alerthandlingProvider.confirmAlert("Confirm delete", "Are you sure you want to delete the chat?").then((res) => {
+    this.alerthandlingProvider.confirmAlert("Confirm delete",
+     "Are you sure you want to delete the chat?").then((res) => {
       if (this.favoriteFlag == false) {
         this.onlineHandlingProvider.deleteChat(this.user.uid, this.channelId);
         this.navController.pop();
@@ -427,7 +435,8 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
 
   makeAudioCall(){
     this.sinchCallingProvider.createAudioCall(this.userId).then((res: any) => {
-      this.loghandlingProvider.showLog(this.TAG, "createAudioCall responce : " + res);
+      this.loghandlingProvider.showLog(this.TAG, "createAudioCall responce : " + JSON.stringify(res));
+      this.navController.push('SinchAudioCallPage', {'call_type': 'onOutgoingCall'});
     }).catch((err) => {
       this.loghandlingProvider.showLog(this.TAG, "createAudioCall error : " + err);
     });

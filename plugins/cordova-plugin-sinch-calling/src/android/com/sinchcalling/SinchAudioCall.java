@@ -39,13 +39,19 @@ public class SinchAudioCall {
         callClient = ConfigureSinch.retrieveSinchClient().getCallClient();
     }
 
-    public void createAudioCall(String remoteUsedId, CallbackContext callbackContext)
+    public void initializeCallbackContex(CallbackContext callbackContext)
+    {
+        audioCallCallbackContext = callbackContext;
+    }
+
+    public void createAudioCall(String remoteUsedId)
     {
         Log.d(TAG, "createAudioCall");
-        if (call == null) {
+        if (call == null) 
+        {
             call = callClient.callUser(remoteUsedId);
+            //this.audioCallCallbackContext = callbackContext;
             call.addCallListener(new SinchCallListener());
-            this.audioCallCallbackContext = callbackContext;
         }
     }
 
@@ -68,18 +74,21 @@ public class SinchAudioCall {
         public void onCallEnded(Call endedCall)
         {
             call = null;
+            Log.e(TAG, "onCallEnded");
             sendPluginResult("onCallEnded");
         }
 
         @Override
         public void onCallEstablished(Call establishedCall)
         {
+            Log.e(TAG, "onCallEstablished");
             sendPluginResult("onCallEstablished");
         }
 
         @Override
         public void onCallProgressing(Call progressingCall)
         {
+            Log.e(TAG, "onCallProgressing");
             sendPluginResult("onCallProgressing");
         }
 
@@ -96,9 +105,24 @@ public class SinchAudioCall {
         public void onIncomingCall(CallClient callClient, Call incomingCall) 
         {
             call = incomingCall;
+            Log.e(TAG, "onIncomingCall");
+            sendPluginResult("onIncomingCall");
+            //call.answer();
+            //call.addCallListener(new SinchCallListener());
+        }
+    }
+
+    public void answerIncomingCall(boolean answer)
+    {
+        if(answer)
+        {
             call.answer();
             call.addCallListener(new SinchCallListener());
+        }else
+        {
+            hangUpAudioCall();
         }
+        
     }
 
     private void sendPluginResult(String callStatus)
@@ -107,12 +131,16 @@ public class SinchAudioCall {
         {
             JSONObject status = new JSONObject();
             status.put("call_status", callStatus);
+            Log.e(TAG, "Plugin result send for " + callStatus);
             result = new PluginResult(PluginResult.Status.OK, status);
             result.setKeepCallback(true);
+            //audioCallCallbackContext.success("Success");
+            Log.e(TAG, audioCallCallbackContext.getCallbackId());
             audioCallCallbackContext.sendPluginResult(result);
-        } catch(JSONException e)
+        } catch(Exception e)
         {
             e.printStackTrace();
+            audioCallCallbackContext.error("error");
         }
     }
 }

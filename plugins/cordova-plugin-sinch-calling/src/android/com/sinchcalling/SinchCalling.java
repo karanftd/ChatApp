@@ -31,12 +31,11 @@ public class SinchCalling extends CordovaPlugin
   private static final String INIT_SINCH = "initSinch";
   private static final String CONNECT_AUDIO_CALL = "connectAudioCall";
   private static final String HANGUP_AUDIO_CALL = "hangupAudioCall";
+  private static final String ANSWER_AUDIO_CALL = "answerAudioCall";
 
   private SinchAudioCall sinchAudioCall;
 
   private static CallbackContext callbackContext;
-
-  private static CallbackContext audioCallCallbackContext;
 
   private ExecutorService executorService;
 
@@ -119,6 +118,8 @@ public class SinchCalling extends CordovaPlugin
                     result = new PluginResult(PluginResult.Status.ERROR, status);
                   }
 
+                  sinchAudioCall.initializeCallbackContex(callbackContext);
+
                   result.setKeepCallback(true);
                   callbackContext.sendPluginResult(result);
                 } catch (JSONException e) {
@@ -132,7 +133,6 @@ public class SinchCalling extends CordovaPlugin
     } else if(action.equals(CONNECT_AUDIO_CALL)) 
     {
 
-      audioCallCallbackContext = callbackContext;
       Log.d(TAG, "from connectAudioCall");
       Log.e(TAG, args.toString());
 
@@ -143,9 +143,8 @@ public class SinchCalling extends CordovaPlugin
         public void run() 
         {
           try{
-            
-            sinchAudioCall.createAudioCall(args.getString(0),
-            audioCallCallbackContext);
+            callbackContext.success("Call Created");
+            sinchAudioCall.createAudioCall(args.getString(0));
 
           } catch (JSONException e) {
             e.printStackTrace();
@@ -155,6 +154,15 @@ public class SinchCalling extends CordovaPlugin
     } else if(action.equals(HANGUP_AUDIO_CALL))
     {
       sinchAudioCall.hangUpAudioCall();
+      result = new PluginResult(PluginResult.Status.OK, "Call Hanged up");
+      result.setKeepCallback(true);
+      callbackContext.sendPluginResult(result);
+    } else if(action.equals(ANSWER_AUDIO_CALL))
+    {
+      sinchAudioCall.answerIncomingCall(args.getBoolean(0));
+      result = new PluginResult(PluginResult.Status.OK, "Call answered");
+      result.setKeepCallback(true);
+      callbackContext.sendPluginResult(result);
     }
 
 

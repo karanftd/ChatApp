@@ -1,3 +1,30 @@
 page-sinch-audio-call {
+    ion-content{
+        background-color: dark !important;
+    }
+    .heading{
+        margin-top: 20%;
+        margin-right: 20%;
+        margin-left: 20%;
+    }
 
+    .call-button{
+        padding : 10%;
+        margin-top: 70%;
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+    .fab {
+        width: 80px !important;
+        height: 80px !important;
+
+        &.left {
+            float: left !important;
+            margin-left: 46px;
+        }
+        &.right {
+            margin-right: 54px;
+            float: right !important;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
+import { Events, } from 'ionic-angular';
 
 import { SinchConfig, SinchCalling } from 'sinch-call'
 
@@ -17,7 +18,8 @@ export class SinchCallingProvider {
 
   constructor(
     private sinchCalling : SinchCalling,
-    private loghandlingProvider: LoghandlingProvider, ) {
+    private loghandlingProvider: LoghandlingProvider,
+    private events: Events,) {
     
   }
 
@@ -28,11 +30,17 @@ export class SinchCallingProvider {
     this.loghandlingProvider.showLog(this.TAG, "from init sinch");
     this.loghandlingProvider.showLog(this.TAG, JSON.stringify(sinchConfig));
     return new Promise( (resolve, reject) => {
-      this.sinchCalling.initSinch(sinchConfig).then((res) => {
-        this.loghandlingProvider.showLog(this.TAG, "Sinch initialization responce : " + res);
+      this.loghandlingProvider.showLog(this.TAG, "from init sinch promise");
+      this.sinchCalling.initSinch(sinchConfig).subscribe((res) => {
+        this.loghandlingProvider.showLog(this.TAG, "Sinch initialization responce ::::: " + JSON.stringify(res));
+        if(res.call_status)
+        {
+          this.loghandlingProvider.showLog(this.TAG, "subscribe " + res.call_status);
+          this.events.publish(res.call_status);
+        }
         resolve(res);
       }, (err) => {
-        this.loghandlingProvider.showLog(this.TAG, "Sinch initialization error : " + err);
+        this.loghandlingProvider.showLog(this.TAG, "Sinch initialization error ::::: " + JSON.stringify(err));
         reject(err);
       });
     });
@@ -57,6 +65,32 @@ export class SinchCallingProvider {
         resolve(res);
       }, (err) => {
         this.loghandlingProvider.showLog(this.TAG, "createAudioCall error : " + err);
+        reject(err);
+      });
+    });
+  }
+
+  hangupAudioCall(){
+    this.loghandlingProvider.showLog(this.TAG, "hangupAudioCall");
+    return new Promise( (resolve, reject) => {
+      this.sinchCalling.hangupAudioCall().then((res) => {
+        this.loghandlingProvider.showLog(this.TAG, "hangupAudioCall responce : " + res);
+        resolve(res);
+      }, (err) => {
+        this.loghandlingProvider.showLog(this.TAG, "hangupAudioCall error : " + err);
+        reject(err);
+      });
+    });
+  }
+
+  answerAudioCall(answer_state: boolean){
+    this.loghandlingProvider.showLog(this.TAG, "answerAudioCall");
+    return new Promise( (resolve, reject) => {
+      this.sinchCalling.answerAudioCall(answer_state).then((res) => {
+        this.loghandlingProvider.showLog(this.TAG, "answerAudioCall responce : " + res);
+        resolve(res);
+      }, (err) => {
+        this.loghandlingProvider.showLog(this.TAG, "answerAudioCall error : " + err);
         reject(err);
       });
     });

@@ -5,7 +5,7 @@ var PLUGIN_NAME = 'SinchCalling';
 
 var sinchCalling = {
 
-	initSinch: function(config, success, failure) {
+	initSinch: function(success, failure, config) {
         exec(success || emptyFnc,
             failure || emptyFnc,
             PLUGIN_NAME,
@@ -25,7 +25,12 @@ var sinchCalling = {
             PLUGIN_NAME,
             'hangupAudioCall',[]);
     },
- 
+    answerAudioCall: function(config, suceess, failure) {
+        exec(success || emptyFnc,
+            failure || emptyFnc,
+            PLUGIN_NAME,
+            'answerAudioCall',[config]);
+    },
 };
 
 module.exports = sinchCalling;
