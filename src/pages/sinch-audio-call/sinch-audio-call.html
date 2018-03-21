@@ -10,12 +10,12 @@
 
    <div class="call-button">
     <ion-row>
-      <ion-fab class="fab" *ngIf="showAnswer">
-        <button ion-fab><ion-icon ios="ios-call" md="md-call" (click)='AnswerCall(true)'></ion-icon></button>
+      <ion-fab class="fab" *ngIf="showAnswer" (click)='AnswerCall(true)'>
+        <button ion-fab><ion-icon ios="ios-call" md="md-call"></ion-icon></button>
       </ion-fab>
 
-      <ion-fab class="fab" color="danger" *ngIf="showHangup">
-        <button ion-fab><ion-icon ios="ios-close" md="md-close" (click)='HangUp()'></ion-icon></button>
+      <ion-fab class="fab" color="danger" *ngIf="showHangup" (click)='HangUp()'>
+        <button ion-fab><ion-icon ios="ios-close" md="md-close"></ion-icon></button>
       </ion-fab>
     </ion-row>
   </div>

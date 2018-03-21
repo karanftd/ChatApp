@@ -10,6 +10,12 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
 
+import android.content.Context;
+
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,9 +40,17 @@ public class SinchAudioCall {
 
     private PluginResult result = null;
 
-    public SinchAudioCall()
+    private Uri mUri;
+
+    private  Ringtone mRingtone;
+
+    private int callType = -1;
+
+    public SinchAudioCall(Context context)
     {
         callClient = ConfigureSinch.retrieveSinchClient().getCallClient();
+        mUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        mRingtone = RingtoneManager.getRingtone(context, mUri);
     }
 
     public void initializeCallbackContex(CallbackContext callbackContext)
@@ -52,11 +66,18 @@ public class SinchAudioCall {
             call = callClient.callUser(remoteUsedId);
             //this.audioCallCallbackContext = callbackContext;
             call.addCallListener(new SinchCallListener());
+            callType = Constant.OUTGOING_CALL;
         }
     }
 
     public void hangUpAudioCall()
     {
+        Log.e(TAG, "hangUpAudioCall");
+        if(mRingtone != null && mRingtone.isPlaying())
+        {
+            Log.e(TAG,"Stop ring tone");
+            mRingtone.stop();
+        }
         if(call != null)
         {
             call.hangup();
@@ -76,6 +97,11 @@ public class SinchAudioCall {
             call = null;
             Log.e(TAG, "onCallEnded");
             sendPluginResult("onCallEnded");
+            if(mRingtone != null && mRingtone.isPlaying())
+            {
+                Log.e(TAG,"Stop ring tone");
+                mRingtone.stop();
+            }
         }
 
         @Override
@@ -83,6 +109,11 @@ public class SinchAudioCall {
         {
             Log.e(TAG, "onCallEstablished");
             sendPluginResult("onCallEstablished");
+            if(mRingtone != null && mRingtone.isPlaying())
+            {
+                Log.e(TAG,"Stop ring tone");
+                mRingtone.stop();
+            }
         }
 
         @Override
@@ -109,11 +140,18 @@ public class SinchAudioCall {
             sendPluginResult("onIncomingCall");
             //call.answer();
             //call.addCallListener(new SinchCallListener());
+            callType = Constant.INCOMING_CALL;
+            if(mRingtone != null && callType == Constant.INCOMING_CALL)
+            {
+                Log.e(TAG,"Start ring tone");
+                mRingtone.play();
+            }
         }
     }
 
     public void answerIncomingCall(boolean answer)
     {
+        Log.e(TAG, "answerIncomingCall");
         if(answer)
         {
             call.answer();

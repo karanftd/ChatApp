@@ -13,4 +13,7 @@ public class Constant {
     public static final String USER_ID = "user_id";
 
     public static final String REMOTE_USER_ID = "remote_user_id";
+
+    public static final int INCOMING_CALL = 1;
+    public static final int OUTGOING_CALL = 0;
 }

@@ -25,7 +25,7 @@ var sinchCalling = {
             PLUGIN_NAME,
             'hangupAudioCall',[]);
     },
-    answerAudioCall: function(config, suceess, failure) {
+    answerAudioCall: function(config, success, failure) {
         exec(success || emptyFnc,
             failure || emptyFnc,
             PLUGIN_NAME,

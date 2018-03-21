@@ -33,7 +33,7 @@ export class SinchAudioCallPage {
       
       this.events.subscribe('onCallEnded', () => {
         this.loghandlingProvider.showLog(this.TAG, "subscribe onCallEnded");
-        this.navController.pop();
+        this.closeAudioCallPage();
         this.showStatus = true;
         this.showHangup = false;
         this.showAnswer = false;
@@ -79,9 +79,16 @@ export class SinchAudioCallPage {
   HangUp(){
     this.sinchCallingProvider.hangupAudioCall().then((res: any) => {
       this.loghandlingProvider.showLog(this.TAG, "hangupAudioCall responce : " + JSON.stringify(res));
+      this.closeAudioCallPage();
     }).catch((err) => {
       this.loghandlingProvider.showLog(this.TAG, "hangupAudioCall error : " + err);
     });
+  }
+
+  closeAudioCallPage(){
+    if(this.navController.getActive().name == "SinchAudioCallPage"){
+        this.navController.pop();
+    }
   }
 
 }

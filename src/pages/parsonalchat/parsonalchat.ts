@@ -75,7 +75,7 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
     private googleMaps: GoogleMaps,
     //private videocallProvider: VideocallProvider,
     private sinchCallingProvider: SinchCallingProvider,
-    private events: Events) {
+    private events: Events,) {
     this.user = this.navParams.get('user');
     this.channelId = this.navParams.get('channelId');
 
@@ -109,7 +109,11 @@ export class ParsonalchatPage implements OnInit, OnDestroy {
 
     this.events.subscribe('onIncomingCall', () => {
       this.loghandlingProvider.showLog(this.TAG, "subscribe onIncomingCall");
-      this.navController.push('SinchAudioCallPage', {'call_type': 'onIncomingCall'});
+      if(this.navController.getActive().name == "ParsonalchatPage"){
+        this.navController.push('SinchAudioCallPage', {'call_type': 'onIncomingCall'});
+      }else{
+        this.loghandlingProvider.showLog(this.TAG, "already on call");
+      }
     });
   }
 

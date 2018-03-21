@@ -102,7 +102,7 @@ public class SinchCalling extends CordovaPlugin
 
                   status.put("start sinch client","succeessfull");
 
-                  sinchAudioCall = new SinchAudioCall();
+                  sinchAudioCall = new SinchAudioCall(activity.getApplicationContext());
 
                   status.put("sinch audio call","succeessfull");
 
@@ -138,7 +138,6 @@ public class SinchCalling extends CordovaPlugin
 
       activity.runOnUiThread(new Runnable() 
       {
-
         @Override
         public void run() 
         {
@@ -153,16 +152,38 @@ public class SinchCalling extends CordovaPlugin
       });
     } else if(action.equals(HANGUP_AUDIO_CALL))
     {
-      sinchAudioCall.hangUpAudioCall();
-      result = new PluginResult(PluginResult.Status.OK, "Call Hanged up");
-      result.setKeepCallback(true);
-      callbackContext.sendPluginResult(result);
+      activity.runOnUiThread(new Runnable() 
+      {
+        @Override
+        public void run() 
+        {
+          Log.d(TAG, "from hangupAudioCall");
+          sinchAudioCall.hangUpAudioCall();
+          result = new PluginResult(PluginResult.Status.OK, "Call Hanged up");
+          result.setKeepCallback(true);
+          callbackContext.sendPluginResult(result);
+        }
+      });
     } else if(action.equals(ANSWER_AUDIO_CALL))
     {
-      sinchAudioCall.answerIncomingCall(args.getBoolean(0));
-      result = new PluginResult(PluginResult.Status.OK, "Call answered");
-      result.setKeepCallback(true);
-      callbackContext.sendPluginResult(result);
+      activity.runOnUiThread(new Runnable() 
+      {
+        @Override
+        public void run() 
+        {
+          try{
+            Log.d(TAG, "from answerAudioCall");
+            Log.e(TAG, args.toString());
+            sinchAudioCall.answerIncomingCall(args.getBoolean(0));
+            result = new PluginResult(PluginResult.Status.OK, "Call answered");
+            result.setKeepCallback(true);
+            callbackContext.sendPluginResult(result);
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+      
     }
 
 
